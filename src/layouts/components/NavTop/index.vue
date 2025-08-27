@@ -1,0 +1,117 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+// import { useAppStore } from '@/stores/modules/app'
+// import { usePermissionStore } from '@/stores/modules/permission'
+
+// const appStore = useAppStore()
+// const permissionStore = usePermissionStore()
+const permissionStore = {
+  sidebarRoute: [
+    {
+      path: '/',
+      meta: {
+        title: '首页',
+      },
+    },
+    {
+      path: '/s',
+      meta: {
+        title: '系统设置',
+      },
+    },
+  ],
+}
+const currentSystemPath = computed(() => {
+  // return permissionStore.currentTopNavPath
+  return '/'
+})
+
+function navClick(path: string) {
+  console.log(path, 'path')
+
+  // appStore.setSideBar(true)
+  // permissionStore.setSideMenu({ path })
+}
+</script>
+
+<template>
+  <div class="navbar-menu">
+    <el-scrollbar>
+      <div class="navbar-menu-list">
+        <a
+          v-for="item in permissionStore.sidebarRoute"
+          :key="item.path"
+          href="javascript:"
+          :class="[currentSystemPath === item.path && 'current']"
+          @click="navClick(item.path)"
+        >{{ item.meta!.title }}</a>
+      </div>
+    </el-scrollbar>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.navbar-menu {
+  background: #fff;
+  // height: 56px;
+
+  .navbar-menu-list {
+    white-space: nowrap;
+    // padding: 0 0 15px;
+    a + a {
+      margin-left: 2px;
+    }
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      vertical-align: middle;
+      text-decoration: none;
+      color: rgba(52, 46, 44, 1);
+      &.current {
+        background: rgba(36, 80, 216, 1);
+        border-color: rgba(36, 80, 216, 1);
+        color: #fff;
+      }
+      &:hover,
+      &:focus {
+        background: rgba(36, 80, 216, 1);
+        color: #fff;
+      }
+    }
+  }
+}
+//.app-top-nav {
+//  flex: 1;
+//  overflow: auto;
+//  margin: 18px 10px 0;
+//  background: #fff;
+//  .top-nav-list {
+//    width: 600px;
+//    white-space: nowrap;
+//    padding: 0 0 15px;
+//    a {
+//      display: inline-block;
+//      padding: 10px 20px;
+//      font-size: 14px;
+//      font-weight: bold;
+//      border-radius: 4px;
+//      vertical-align: middle;
+//
+//      &:hover,
+//      &:focus {
+//        color: #fff;
+//        background: var(--el-color-primary);
+//      }
+//
+//      &.current {
+//        background: var(--el-color-primary);
+//        border-color: var(--el-color-primary);
+//        color: #fff;
+//      }
+//    }
+//  }
+//}
+</style>
