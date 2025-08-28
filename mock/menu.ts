@@ -1,16 +1,21 @@
-export default [
-  {
-    url: '/api/menu/list',
-    method: 'post',
-    response: () => {
-      return {
-        code: 0,
-        message: 'success',
-        data: [
-          { id: 1, name: 'John Doe', age: 25 },
-          { id: 2, name: 'Jane Doe', age: 24 },
-        ],
-      }
-    },
-  },
+const data = [
+  // 系统设置模块
+  { id: 1, name: '系统设置', permissionCode: 'system-setting', parentId: null },
+  { id: 2, name: '基本设置', permissionCode: 'base-setting', parentId: 1 },
+  { id: 3, name: '用户管理', permissionCode: 'user-manage', parentId: 2 },
+  { id: 4, name: '角色管理', permissionCode: 'role-manage', parentId: 2 },
+  { id: 5, name: '权限设置', permissionCode: 'permissionCode-setting', parentId: 2 },
+  { id: 6, name: '日志管理', permissionCode: 'log-manage', parentId: 1 },
+
+  // ECharts模块
+  { id: 7, name: 'ECharts', permissionCode: 'echarts', parentId: null },
+  { id: 8, name: '柱状图', permissionCode: 'bar', parentId: 7 },
+  { id: 9, name: '折线图', permissionCode: 'line', parentId: 7 },
+  { id: 10, name: '雷达图', permissionCode: 'radar', parentId: 7 },
 ]
+
+export default {
+  code: 200,
+  message: 'success',
+  data,
+}
