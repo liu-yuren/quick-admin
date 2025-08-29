@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
 import { onMounted, ref } from 'vue'
-import { getMenuList } from '@/api/menu'
 import Breadcrumb from './components/Breadcrumb/index.vue'
 import NavTop from './components/NavTop/index.vue'
 import TagsView from './components/TagsView/index.vue'
@@ -12,10 +11,6 @@ const item = {
   address: 'No. 189, Grove St, Los Angeles',
 }
 const tableData = ref(Array.from({ length: 20 }).fill(item))
-
-onMounted(() => {
-  getMenuList()
-})
 </script>
 
 <template>

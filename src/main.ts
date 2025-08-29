@@ -1,18 +1,19 @@
 import ElementPlus from 'element-plus'
 
-import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-
 import App from './App.vue'
-import router from './router'
-import 'element-plus/dist/index.css'
 
+import router from './router'
+import store from './stores'
+
+// 样式
+import 'element-plus/dist/index.css'
 import 'normalize.css/normalize.css'
 import '@/styles/index.scss'
 
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(store)
 app.use(router)
 app.use(ElementPlus)
 

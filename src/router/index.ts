@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layouts/index.vue'
+import { useAuthStore } from '@/stores/modules/auth'
 
 /**
  * @description 动态导入所有权限路由模块
@@ -53,6 +54,13 @@ const staticRoutes = [
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [...staticRoutes],
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
+  authStore.getMenuList()
+  next()
 })
 
 export default router

@@ -15,7 +15,13 @@ const data = [
 ]
 
 export default {
-  code: 200,
-  message: 'success',
-  data,
+  url: '/api/menu/list',
+  method: 'post',
+  response: () => {
+    return {
+      code: 200,
+      message: 'success',
+      data,
+    }
+  },
 }
