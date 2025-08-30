@@ -11,7 +11,7 @@ export const echartsRoutes = [
     },
     children: [
       {
-        path: '/bar',
+        path: 'bar',
         name: 'bar',
         meta: {
           title: '柱状图',
@@ -19,7 +19,7 @@ export const echartsRoutes = [
         },
       },
       {
-        path: '/line',
+        path: 'line',
         name: 'line',
         meta: {
           title: '折线图',
@@ -27,7 +27,7 @@ export const echartsRoutes = [
         },
       },
       {
-        path: '/radar',
+        path: 'radar',
         name: 'radar',
         meta: {
           title: '雷达图',

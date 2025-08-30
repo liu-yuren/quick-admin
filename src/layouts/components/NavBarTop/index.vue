@@ -1,50 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-// import { useAppStore } from '@/stores/modules/app'
-// import { usePermissionStore } from '@/stores/modules/permission'
+import { useAuthStore } from '@/stores/modules/auth'
 
-// const appStore = useAppStore()
-// const permissionStore = usePermissionStore()
-const permissionStore = {
-  sidebarRoute: [
-    {
-      path: '/',
-      meta: {
-        title: '首页',
-      },
-    },
-    {
-      path: '/s',
-      meta: {
-        title: '系统设置',
-      },
-    },
-  ],
-}
-const currentSystemPath = computed(() => {
-  // return permissionStore.currentTopNavPath
-  return '/'
-})
-
-function navClick(path: string) {
-  console.log(path, 'path')
-
-  // appStore.setSideBar(true)
-  // permissionStore.setSideMenu({ path })
-}
+const authStore = useAuthStore()
 </script>
 
 <template>
   <div class="navbar-menu">
     <el-scrollbar>
       <div class="navbar-menu-list">
+        <!-- :class="[authStore === item.name && 'current']" -->
         <a
-          v-for="item in permissionStore.sidebarRoute"
-          :key="item.path"
+          v-for="item in authStore.authMenuList"
+          :key="item.id"
           href="javascript:"
-          :class="[currentSystemPath === item.path && 'current']"
-          @click="navClick(item.path)"
-        >{{ item.meta!.title }}</a>
+        >{{ item.name }}</a>
       </div>
     </el-scrollbar>
   </div>

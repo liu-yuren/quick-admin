@@ -24,7 +24,7 @@ export const allAsyncRoutes = Object.keys(modules).map((path) => {
  * @description 基础静态路由配置
  * @note 这些路由不需要权限验证，所有用户都可以访问
  */
-const staticRoutes = [
+export const staticRoutes = [
   {
     path: '/',
     component: Layout,
@@ -59,7 +59,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
-  authStore.getMenuList()
+  authStore.generateRoutes()
   next()
 })
 

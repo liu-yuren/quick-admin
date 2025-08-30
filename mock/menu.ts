@@ -1,3 +1,5 @@
+import { arrayToTree } from '../src/utils/tree'
+
 const data = [
   // 系统设置模块
   { id: 1, name: '系统设置', permissionCode: 'system-setting', parentId: null },
@@ -21,7 +23,7 @@ export default {
     return {
       code: 200,
       message: 'success',
-      data,
+      data: arrayToTree(data),
     }
   },
 }

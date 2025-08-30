@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import Breadcrumb from './components/Breadcrumb/index.vue'
-import NavTop from './components/NavTop/index.vue'
+import SubMenu from './components/Menu/SubMenu.vue'
+import NavTop from './components/NavBarTop/index.vue'
 import TagsView from './components/TagsView/index.vue'
 
 const item = {
@@ -19,93 +19,7 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
       <el-aside width="200px">
         <el-scrollbar>
           <el-menu :default-openeds="['1', '3']">
-            <el-sub-menu index="1">
-              <template #title>
-                <el-icon><Message /></el-icon>Navigator One
-              </template>
-              <el-menu-item-group>
-                <template #title>
-                  Group 1
-                </template>
-                <el-menu-item index="1-1">
-                  Option 1
-                </el-menu-item>
-                <el-menu-item index="1-2">
-                  Option 2
-                </el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="Group 2">
-                <el-menu-item index="1-3">
-                  Option 3
-                </el-menu-item>
-              </el-menu-item-group>
-              <el-sub-menu index="1-4">
-                <template #title>
-                  Option4
-                </template>
-                <el-menu-item index="1-4-1">
-                  Option 4-1
-                </el-menu-item>
-              </el-sub-menu>
-            </el-sub-menu>
-            <el-sub-menu index="2">
-              <template #title>
-                <el-icon><IconMenu /></el-icon>Navigator Two
-              </template>
-              <el-menu-item-group>
-                <template #title>
-                  Group 1
-                </template>
-                <el-menu-item index="2-1">
-                  Option 1
-                </el-menu-item>
-                <el-menu-item index="2-2">
-                  Option 2
-                </el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="Group 2">
-                <el-menu-item index="2-3">
-                  Option 3
-                </el-menu-item>
-              </el-menu-item-group>
-              <el-sub-menu index="2-4">
-                <template #title>
-                  Option 4
-                </template>
-                <el-menu-item index="2-4-1">
-                  Option 4-1
-                </el-menu-item>
-              </el-sub-menu>
-            </el-sub-menu>
-            <el-sub-menu index="3">
-              <template #title>
-                <el-icon><Setting /></el-icon>Navigator Three
-              </template>
-              <el-menu-item-group>
-                <template #title>
-                  Group 1
-                </template>
-                <el-menu-item index="3-1">
-                  Option 1
-                </el-menu-item>
-                <el-menu-item index="3-2">
-                  Option 2
-                </el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group title="Group 2">
-                <el-menu-item index="3-3">
-                  Option 3
-                </el-menu-item>
-              </el-menu-item-group>
-              <el-sub-menu index="3-4">
-                <template #title>
-                  Option 4
-                </template>
-                <el-menu-item index="3-4-1">
-                  Option 4-1
-                </el-menu-item>
-              </el-sub-menu>
-            </el-sub-menu>
+            <SubMenu :menu-list="[]" />
           </el-menu>
         </el-scrollbar>
       </el-aside>
