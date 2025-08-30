@@ -11,9 +11,9 @@ const authStore = useAuthStore()
         <!-- :class="[authStore === item.name && 'current']" -->
         <a
           v-for="item in authStore.authMenuList"
-          :key="item.id"
+          :key="item.name"
           href="javascript:"
-        >{{ item.name }}</a>
+        >{{ item.meta?.title }}</a>
       </div>
     </el-scrollbar>
   </div>

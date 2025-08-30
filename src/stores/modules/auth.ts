@@ -1,3 +1,4 @@
+import type { RouteRecordRaw } from 'vue-router'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { getMenuListApi } from '@/api/menu'
@@ -32,24 +33,30 @@ function setKey(routes: any) {
 // 拉平数组
 function flatTree(data: any[]) {
   let result: Array<any> = []
+
   for (let i = 0; i < data.length; i++) {
-    result.push({ enName: data[i].enName, value: true })
+    result.push({
+      permissionCode: data[i].permissionCode,
+      value: true,
+    })
+
     if (data[i].children && data[i].children.length)
       result = result.concat(flatTree(data[i].children))
   }
+
   return result
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const authMenuList = ref<AuthMenuList[]>([])
-  const flatRole = ref<Record<string, boolean>>({})
+  const authMenuList = ref<RouteRecordRaw[]>([])
+  const permissionMap = ref<Record<string, boolean>>({})
 
   function filterAsyncRoutes(routes: any) {
     const res = []
 
     for (let i = 0; i < routes.length; i++) {
       let obj: any = {}
-      if (flatRole.value[routes[i].name] || flatRole.value[routes[i].meta.permissionCode]) {
+      if (permissionMap.value[routes[i].name] || permissionMap.value[routes[i].meta.permissionCode]) {
         obj = { ...routes[i] }
         if (routes[i].children)
           obj.children = filterAsyncRoutes(routes[i].children)
@@ -63,13 +70,19 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function generateRoutes() {
     await getMenuListApi().then((res) => {
-      console.log(res, 'res')
+      // 1. tree数据平铺
+      const flatMenu = flatTree(res.data)
+      // 2. 转换为map
+      const flatPermissionMap = arrTransformObj(flatMenu, 'permissionCode', 'value')
+
+      permissionMap.value = {
+        ...flatPermissionMap,
+      }
+
+      // 3. 根据权限生成路由
+      authMenuList.value = filterAsyncRoutes(allAsyncRoutes)
+      console.log(authMenuList.value, '根据权限生成路由-authMenuList.value')
     })
-    // const flatRoutes = treeToArray(allAsyncRoutes)
-    // console.warn(flatRoutes, 'flatRoutes ==')
-    // authMenuList.value = res.data
-    // const flat = treeToArray(res.data)
-    // const permissionMap = arrTransformObj(flat, 'permissionCode', 'value')
   }
 
   return { authMenuList, generateRoutes }

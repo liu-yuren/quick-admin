@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/modules/auth'
 import Breadcrumb from './components/Breadcrumb/index.vue'
 import SubMenu from './components/Menu/SubMenu.vue'
 import NavTop from './components/NavBarTop/index.vue'
 import TagsView from './components/TagsView/index.vue'
+
+const authStore = useAuthStore()
 
 const item = {
   date: '2016-05-02',
@@ -19,7 +22,7 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
       <el-aside width="200px">
         <el-scrollbar>
           <el-menu :default-openeds="['1', '3']">
-            <SubMenu :menu-list="[]" />
+            <SubMenu :menu-list="authStore.authMenuList" />
           </el-menu>
         </el-scrollbar>
       </el-aside>
