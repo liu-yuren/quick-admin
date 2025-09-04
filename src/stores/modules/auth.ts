@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { getMenuListApi } from '@/api/menu'
-import { allAsyncRoutes, staticRoutes } from '@/router'
+import router, { allAsyncRoutes, staticRoutes } from '@/router'
 import arrTransformObj from '@/utils/array'
 import { treeToArray } from '@/utils/tree'
 // import { arrTransformObj } from '@/utils/array'
@@ -49,7 +49,11 @@ function flatTree(data: any[]) {
 
 export const useAuthStore = defineStore('auth', () => {
   const authMenuList = ref<RouteRecordRaw[]>([])
+  const sideBarMenu = ref<any[]>([])
+  const currentNavBarPath = ref('')
   const permissionMap = ref<Record<string, boolean>>({})
+
+  const navBarMenu = computed(() => authMenuList.value)
 
   function filterAsyncRoutes(routes: any) {
     const res = []
@@ -66,6 +70,14 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     return res
+  }
+
+  function setMenuList(path: string) {
+    currentNavBarPath.value = path
+    const findMenu = authMenuList.value.find(item => item.path === path)
+    if (findMenu?.children?.length) {
+      sideBarMenu.value = findMenu.children
+    }
   }
 
   async function generateRoutes() {
@@ -85,5 +97,5 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  return { authMenuList, generateRoutes }
+  return { authMenuList, navBarMenu, sideBarMenu, currentNavBarPath, generateRoutes, setMenuList }
 })

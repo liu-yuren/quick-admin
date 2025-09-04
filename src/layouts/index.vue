@@ -1,19 +1,18 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAppStore } from '@/stores/modules/app'
 import { useAuthStore } from '@/stores/modules/auth'
 import Breadcrumb from './components/Breadcrumb/index.vue'
 import SubMenu from './components/Menu/SubMenu.vue'
 import NavTop from './components/NavBarTop/index.vue'
 import TagsView from './components/TagsView/index.vue'
 
+const route = useRoute()
+const appStore = useAppStore()
 const authStore = useAuthStore()
 
-const item = {
-  date: '2016-05-02',
-  name: 'Tom',
-  address: 'No. 189, Grove St, Los Angeles',
-}
-const tableData = ref(Array.from({ length: 20 }).fill(item))
+const activeMenu = computed(() => route.name)
 </script>
 
 <template>
@@ -21,8 +20,14 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
     <el-container>
       <el-aside width="200px">
         <el-scrollbar>
-          <el-menu :default-openeds="['1', '3']">
-            <SubMenu :menu-list="authStore.authMenuList" />
+          <el-menu
+            :router="false"
+            :default-active="activeMenu"
+            :collapse="appStore.collapse"
+            :unique-opened="false"
+            :collapse-transition="false"
+          >
+            <SubMenu :menu-list="authStore.sideBarMenu" />
           </el-menu>
         </el-scrollbar>
       </el-aside>
@@ -43,11 +48,7 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
 
         <el-main>
           <el-scrollbar>
-            <el-table :data="tableData">
-              <el-table-column prop="date" label="Date" width="140" />
-              <el-table-column prop="name" label="Name" width="120" />
-              <el-table-column prop="address" label="Address" />
-            </el-table>
+            <router-view />
           </el-scrollbar>
         </el-main>
       </el-container>
@@ -69,7 +70,7 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
   background: #fff;
   border-top: 1px solid #d8dce5;
   border-bottom: 1px solid #d8dce5;
-  padding-left: 20px;
+  padding-left: 10px;
   box-sizing: border-box;
 }
 .breadcrumb-box {
@@ -78,7 +79,7 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
   background-color: #fff;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .el-aside {
   border-right: 1px solid var(--el-menu-border-color);

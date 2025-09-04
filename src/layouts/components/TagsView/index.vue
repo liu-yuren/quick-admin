@@ -1,12 +1,33 @@
+<script setup lang="ts">
+import { onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useTabsViewStore } from '@/stores/modules/tabsView'
+
+const route = useRoute()
+const tabsViewStore = useTabsViewStore()
+
+watch(route, (newVal) => {
+  tabsViewStore.addTabsView(newVal)
+}, { immediate: true })
+
+onMounted(() => {
+  // initTabsView()
+})
+
+// function initTabsView() {
+//   tabsViewStore.addTabsView()
+// }
+</script>
+
 <template>
   <div style="height: 34px;line-height: 28px;">
     <el-button
-      v-for="item in 10"
-      :key="item"
+      v-for="item in tabsViewStore.tabsView"
+      :key="item.path"
       size="small"
-      color="rgba(36, 80, 216, 1)"
+      :color="item.path === route.path ? 'rgba(36, 80, 216, 1)' : ''"
     >
-      button
+      {{ item.title }}
     </el-button>
   </div>
 </template>

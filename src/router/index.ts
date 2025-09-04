@@ -56,10 +56,21 @@ const router = createRouter({
   routes: [...staticRoutes],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
-  authStore.generateRoutes()
+  const currentPath = to.path.split('/')[1]
+  authStore.setMenuList(`/${currentPath}`)
+
+  // 如果没有菜单列表，就重新请求菜单列表并添加动态路由
+  if (!authStore.authMenuList.length) {
+    await authStore.generateRoutes()
+    authStore.authMenuList.forEach((route) => {
+      router.addRoute(route)
+    })
+    return next({ ...to, replace: true })
+  }
+
   next()
 })
 

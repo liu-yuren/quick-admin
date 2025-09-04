@@ -1,30 +1,58 @@
 <script setup lang="ts">
+import { markRaw } from 'vue'
 import { useRouter } from 'vue-router'
 
 defineProps<{ menuList: any }>()
 
 const router = useRouter()
-function handleClickMenu(subItem: any) {
+async function handleClickMenu(subItem: any) {
   if (subItem.meta.isLink)
     return window.open(subItem.meta.isLink, '_blank')
-  router.push(subItem.path)
+
+  // 安全检查：确保 subItem.name 存在且不为空
+  if (!subItem.name) {
+    console.warn('Route name is missing for menu item:', subItem)
+    return
+  }
+
+  // 使用 async/await 来处理路由跳转
+  try {
+    await router.push({ name: subItem.name })
+  }
+  catch (error) {
+    console.warn('Failed to navigate to route:', subItem.name, error)
+    // 如果通过 name 跳转失败，尝试使用 path
+    if (subItem.path) {
+      try {
+        await router.push(subItem.path)
+      }
+      catch (pathError) {
+        console.error('Failed to navigate using path:', subItem.path, pathError)
+      }
+    }
+  }
+}
+
+// Helper function to safely render icon components
+function getIconComponent(icon: any) {
+  return markRaw(icon)
 }
 </script>
 
 <template>
-  <template v-for="subItem in menuList" :key="subItem.path">
-    <el-sub-menu v-if="subItem.children?.length" :index="subItem.path">
+  <template v-for="subItem in menuList" :key="subItem.name">
+    <el-sub-menu v-if="subItem.children?.length" :index="subItem.name">
       <template #title>
         <el-icon v-if="subItem.meta.icon">
-          <component :is="subItem.meta.icon" />
+          <component :is="getIconComponent(subItem.meta.icon)" />
         </el-icon>
         <span class="sle">{{ subItem.meta.title }}</span>
       </template>
       <SubMenu :menu-list="subItem.children" />
     </el-sub-menu>
-    <el-menu-item v-else :index="subItem.path" @click="handleClickMenu(subItem)">
+    <el-menu-item v-else :index="subItem.name" @click="handleClickMenu(subItem)">
       <el-icon v-if="subItem.meta.icon">
-        <component :is="subItem.meta.icon" />
+        <component :is="getIconComponent(subItem.meta.icon)" />
       </el-icon>
       <template #title>
         <span class="sle">{{ subItem.meta.title }}</span>

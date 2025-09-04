@@ -1,3 +1,4 @@
+import { Menu } from '@element-plus/icons-vue'
 import Layout from '@/layouts/index.vue'
 
 export const echartsRoutes = [
@@ -16,6 +17,7 @@ export const echartsRoutes = [
         meta: {
           title: '柱状图',
           permissionCode: 'bar',
+          icon: Menu,
         },
       },
       {
@@ -24,6 +26,7 @@ export const echartsRoutes = [
         meta: {
           title: '折线图',
           permissionCode: 'line',
+          icon: Menu,
         },
       },
       {
@@ -32,6 +35,7 @@ export const echartsRoutes = [
         meta: {
           title: '雷达图',
           permissionCode: 'radar',
+          icon: Menu,
         },
       },
     ],

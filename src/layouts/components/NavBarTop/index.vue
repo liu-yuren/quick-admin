@@ -10,9 +10,11 @@ const authStore = useAuthStore()
       <div class="navbar-menu-list">
         <!-- :class="[authStore === item.name && 'current']" -->
         <a
-          v-for="item in authStore.authMenuList"
+          v-for="item in authStore.navBarMenu"
           :key="item.name"
           href="javascript:"
+          :class="[authStore.currentNavBarPath === item.path && 'current']"
+          @click="authStore.setMenuList(item.path)"
         >{{ item.meta?.title }}</a>
       </div>
     </el-scrollbar>
