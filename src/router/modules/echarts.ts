@@ -7,7 +7,7 @@ export const echartsRoutes = [
     name: 'echarts',
     component: Layout,
     meta: {
-      title: 'ECharts',
+      title: 'bi可视化',
       permissionCode: 'echarts',
     },
     children: [

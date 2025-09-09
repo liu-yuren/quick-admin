@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppStore } from '@/stores/modules/app'
 import { useAuthStore } from '@/stores/modules/auth'
@@ -16,22 +16,26 @@ const activeMenu = computed(() => route.name)
 </script>
 
 <template>
-  <el-watermark id="watermark" :font="{ color: 'rgba(0, 0, 0, .15)' }" content="v-liuyuren">
-    <el-container>
-      <el-aside width="200px">
-        <el-scrollbar>
-          <el-menu
-            :router="false"
-            :default-active="activeMenu"
-            :collapse="appStore.collapse"
-            :unique-opened="false"
-            :collapse-transition="false"
-          >
-            <SubMenu :menu-list="authStore.sideBarMenu" />
-          </el-menu>
-        </el-scrollbar>
-      </el-aside>
+  <el-container>
+    <el-aside width="200px">
+      <el-scrollbar>
+        <el-menu
+          :router="false"
+          :default-active="activeMenu"
+          :collapse="appStore.isCollapse"
+          :unique-opened="false"
+          :collapse-transition="false"
 
+          background-color="#304156"
+          text-color="#bfcbd9"
+          active-text-color="#409EFF"
+        >
+          <SubMenu :menu-list="authStore.sideBarMenu" />
+        </el-menu>
+      </el-scrollbar>
+    </el-aside>
+
+    <el-watermark id="watermark" :font="{ color: 'rgba(0, 0, 0, .15)' }" content="v-liuyuren">
       <el-container direction="vertical">
         <el-header style="height: auto;">
           <div class="nav-top">
@@ -42,18 +46,15 @@ const activeMenu = computed(() => route.name)
         <div class="tabs-box">
           <TagsView />
         </div>
-        <div class="breadcrumb-box">
-          <Breadcrumb />
-        </div>
-
+        <Breadcrumb />
         <el-main>
-          <el-scrollbar>
+          <div style="padding: 10px 20px;">
             <router-view />
-          </el-scrollbar>
+          </div>
         </el-main>
       </el-container>
-    </el-container>
-  </el-watermark>
+    </el-watermark>
+  </el-container>
 </template>
 
 <style scoped>
@@ -74,15 +75,20 @@ const activeMenu = computed(() => route.name)
   box-sizing: border-box;
 }
 .breadcrumb-box {
-  height: 30px;
+  /* height: 30px;
   line-height: 30px;
   background-color: #fff;
   display: flex;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 10px; */
 }
 .el-aside {
   border-right: 1px solid var(--el-menu-border-color);
+  background-color: #304156;
+
+  .el-menu {
+    border: none;
+  }
 }
 .el-main {
   background-color: #f2f3f5;
