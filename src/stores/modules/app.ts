@@ -1,11 +1,40 @@
-import { reactive } from 'vue'
+import type { Ref } from 'vue'
+import { defineStore } from 'pinia'
+import { reactive, ref, toRefs } from 'vue'
 
-export function useAppStore() {
-  const state = reactive({
-    collapse: false,
-  })
+interface AppStoreState {
+  isCollapse: boolean
+  isDark: boolean
+  isWatermark: boolean
+  layout: string
+}
+
+export const useAppStore = defineStore('app', () => {
+  const isCollapse = ref(false)
+  const isDark = ref(false)
+  const isWatermark = ref(true)
+  const layout = ref('classic')
+
+  const stateMap = {
+    isCollapse,
+    isDark,
+    isWatermark,
+    layout,
+  } as const
+
+  function setAppSoreState<K extends keyof typeof stateMap>(key: K, value: AppStoreState[K]): void {
+    const state = stateMap[key]
+    if (state) {
+      (state as Ref<any>).value = value
+    }
+  }
 
   return {
-    ...state,
+    isCollapse,
+    isDark,
+    isWatermark,
+    layout,
+
+    setAppSoreState,
   }
-}
+})

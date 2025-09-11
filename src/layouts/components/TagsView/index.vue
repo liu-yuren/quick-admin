@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="height: 34px;line-height: 28px;">
+  <div class="tags-view-container">
     <el-button
       v-for="item in tabsViewStore.tabsView"
       :key="item.path"

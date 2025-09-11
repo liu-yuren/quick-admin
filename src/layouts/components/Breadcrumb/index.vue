@@ -9,7 +9,7 @@ const breadcrumbList = computed(() => route.matched.filter(item => item.meta?.ti
 </script>
 
 <template>
-  <el-breadcrumb separator="/" style="height: 30px;line-height: 30px;">
+  <el-breadcrumb separator="/">
     <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.path" :to="{ path: '/' }">
       {{ item.meta?.title }}
     </el-breadcrumb-item>
