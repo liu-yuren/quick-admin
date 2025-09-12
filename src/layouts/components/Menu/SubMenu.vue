@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { markRaw } from 'vue'
 import { useRouter } from 'vue-router'
 
 defineProps<{ menuList: any }>()
@@ -32,11 +31,6 @@ async function handleClickMenu(subItem: any) {
     }
   }
 }
-
-// Helper function to safely render icon components
-function getIconComponent(icon: any) {
-  return markRaw(icon)
-}
 </script>
 
 <template>
@@ -44,7 +38,7 @@ function getIconComponent(icon: any) {
     <el-sub-menu v-if="subItem.children?.length" :index="subItem.name">
       <template #title>
         <el-icon v-if="subItem.meta.icon">
-          <component :is="getIconComponent(subItem.meta.icon)" />
+          <component :is="subItem.meta.icon" />
         </el-icon>
         <span class="sle">{{ subItem.meta.title }}</span>
       </template>
@@ -52,7 +46,7 @@ function getIconComponent(icon: any) {
     </el-sub-menu>
     <el-menu-item v-else :index="subItem.name" @click="handleClickMenu(subItem)">
       <el-icon v-if="subItem.meta.icon">
-        <component :is="getIconComponent(subItem.meta.icon)" />
+        <component :is="subItem.meta.icon" />
       </el-icon>
       <template #title>
         <span class="sle">{{ subItem.meta.title }}</span>

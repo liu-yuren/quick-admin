@@ -8,7 +8,6 @@ const authStore = useAuthStore()
   <div class="navbar-menu">
     <el-scrollbar>
       <div class="navbar-menu-list">
-        <!-- :class="[authStore === item.name && 'current']" -->
         <a
           v-for="item in authStore.navBarMenu"
           :key="item.name"
@@ -24,7 +23,6 @@ const authStore = useAuthStore()
 <style lang="scss" scoped>
 .navbar-menu {
   background: #fff;
-  // height: 56px;
 
   .navbar-menu-list {
     white-space: nowrap;
@@ -32,6 +30,7 @@ const authStore = useAuthStore()
     a + a {
       margin-left: 2px;
     }
+
     a {
       display: inline-block;
       padding: 10px 20px;

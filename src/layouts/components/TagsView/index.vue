@@ -21,7 +21,7 @@ function isActive(item: any) {
 </script>
 
 <template>
-  <div class="tabs-view-container" style="height: 34px;line-height: 28px;">
+  <div class="tabs-view-container">
     <a
       v-for="item in tabsViewStore.tabsView"
       :key="item.path"

@@ -1,65 +1,40 @@
-import { reactive } from 'vue'
-import { updateElementPlusTheme } from '@/utils/theme'
+import type { Ref } from 'vue'
+import { defineStore } from 'pinia'
+import { reactive, ref, toRefs } from 'vue'
 
-export interface AppState {
-  layout: 'side' | 'top'
-  size: 'default' | 'small' | 'large'
+interface AppStoreState {
   isCollapse: boolean
-  themeColor: any
+  isDark: boolean
+  isWatermark: boolean
+  layout: string
 }
 
-export enum ElementPlusModifyEnum {
-  info = 'info',
-  primary = 'primary',
-  success = 'success',
-  warning = 'warning',
-  danger = 'danger',
-}
+export const useAppStore = defineStore('app', () => {
+  const isCollapse = ref(false)
+  const isDark = ref(false)
+  const isWatermark = ref(true)
+  const layout = ref('classic')
 
-export function useAppStore() {
-  const state = reactive<AppState>({
-    // 布局模式
-    layout: 'side',
-    // 组件尺寸
-    size: 'default',
-    // 折叠菜单
-    isCollapse: false,
-    // 主题颜色
-    themeColor: {
-      info: '#909399',
-      primary: '#FFBF13',
-      success: '#67C23A',
-      warning: '#E6A23C',
-      danger: '#F56C6C',
+  const stateMap = {
+    isCollapse,
+    isDark,
+    isWatermark,
+    layout,
+  } as const
 
-      // info: '#909399',
-      // primary: '#409EFF',
-      // success: '#67C23A',
-      // warning: '#E6A23C',
-      // danger: '#F56C6C',
-    },
-  })
-
-  function setAppState(partial: Partial<AppState>) {
-    Object.assign(state, partial)
-  }
-
-  /**
-   * 设置主题颜色
-   * @param type 类型
-   * @param color 颜色
-   */
-  function setThemeColor(type: any, color: string) {
-  // 修改 store 中主题颜色的值
-    state.themeColor[type] = color
-
-    // 更新 Element Plus 主题
-    updateElementPlusTheme(type, color)
+  function setAppSoreState<K extends keyof typeof stateMap>(key: K, value: AppStoreState[K]): void {
+    const state = stateMap[key]
+    if (state) {
+      (state as Ref<any>).value = value
+    }
   }
 
   return {
-    ...state,
-    setAppState,
-    setThemeColor,
+    isCollapse,
+    isDark,
+    isWatermark,
+    layout,
+
+    setAppSoreState,
   }
-}
+})
