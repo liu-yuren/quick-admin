@@ -3,7 +3,6 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-console.log(route, '===')
 
 const breadcrumbList = computed(() => route.matched.filter(item => item.meta?.title))
 </script>
@@ -15,18 +14,3 @@ const breadcrumbList = computed(() => route.matched.filter(item => item.meta?.ti
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
-
-<style lang="scss" scoped>
-.breadcrumb-container {
-  font-size: 14px;
-  line-height: 30px;
-  background: #fff;
-  border-left: 10px solid #f1f1f1;
-  border-top: 10px solid #f1f1f1;
-  padding: 0 0 0 20px;
-  // .no-redirect {
-  //   color: #97a8be;
-  //   cursor: text;
-  // }
-}
-</style>

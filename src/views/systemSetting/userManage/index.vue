@@ -11,9 +11,9 @@ const tableData = ref(Array.from({ length: 20 }).fill(item))
 
 <template>
   <div>
-    <h1>
-      用户管理
-    </h1>
+    <el-divider content-position="right">
+      收起
+    </el-divider>
 
     <el-table :data="tableData">
       <el-table-column prop="date" label="Date" width="140" />

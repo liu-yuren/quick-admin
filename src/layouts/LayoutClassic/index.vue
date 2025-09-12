@@ -54,37 +54,49 @@ const activeMenu = computed(() => route.name)
   </el-container>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .header-box {
   display: flex;
   align-items: center;
   padding: 0 15px;
   border-bottom: 1px solid #d8dce5;
   box-sizing: border-box;
+  background-color: #fff;
 }
 
 .tags-view-box {
   width: 100%;
-  display: flex;
-  align-items: center;
   border-bottom: 1px solid #d8dce5;
-  padding-left: 10px;
+  padding-top: 2px;
+  padding-left: 15px;
   box-sizing: border-box;
-  padding: 4px 0;
+  background-color: #fff;
 }
 
 .breadcrumb-box {
-  padding: 8px 0;
-  margin-left: 15px;
+  padding: 8px 0 8px 20px;
+  border-left: 10px solid #f1f1f1;
+  border-top: 10px solid #f1f1f1;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.04);
+  position: relative;
+  background-color: #fff;
 }
 
 .el-aside {
   border-right: 1px solid var(--el-menu-border-color);
   background-color: #545c64;
+  transition: width 0.2s;
+
+  .el-menu {
+    border-right: none;
+  }
 }
 
 .el-main {
-  background-color: #f2f3f5;
-  padding: 10px 12px;
+  margin: 6px 0 0 10px;
+  padding: 8px 10px;
+  background-color: #fff;
 }
 </style>

@@ -14,6 +14,12 @@ const data = [
   { id: 8, name: '柱状图', permissionCode: 'bar', parentId: 7 },
   { id: 9, name: '折线图', permissionCode: 'line', parentId: 7 },
   { id: 10, name: '雷达图', permissionCode: 'radar', parentId: 7 },
+
+  // 配置中心模块
+  { id: 11, name: '配置中心', permissionCode: 'config-center', parentId: null },
+  { id: 12, name: '数据字典配置', permissionCode: 'dict-config', parentId: 11 },
+  { id: 13, name: '类目管理', permissionCode: 'category', parentId: 12 },
+  { id: 14, name: '数据字典', permissionCode: 'dict', parentId: 12 },
 ]
 
 export default {
