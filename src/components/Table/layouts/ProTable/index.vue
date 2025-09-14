@@ -145,10 +145,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="height: 100%;">
+  <div class="pro-table-container" style="height: 100%;">
     <SearchForm :form-options="formOptions" />
 
     <BaseTable
+      class="base-table"
       :table-col="tableCol"
       :table-props="{
         data: tableData,
@@ -167,10 +168,20 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-.common-table-page {
-  display: flex;
-  justify-content: center;
-  padding: 20px 0;
+<style lang="scss" scoped>
+.pro-table-container {
+  height: 100%;
+  // display: flex;
+  // flex-direction: column;
+
+  // .base-table {
+  //   flex: 1;
+  // }
+
+  .common-table-page {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+  }
 }
 </style>

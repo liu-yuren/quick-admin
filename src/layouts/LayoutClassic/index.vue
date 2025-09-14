@@ -46,9 +46,11 @@ const activeMenu = computed(() => route.name)
       <Breadcrumb class="breadcrumb-box" />
 
       <el-main>
-        <el-scrollbar>
+        <div class="main-container">
+          <!-- <el-scrollbar> -->
           <router-view />
-        </el-scrollbar>
+          <!-- </el-scrollbar> -->
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -76,7 +78,7 @@ const activeMenu = computed(() => route.name)
 .breadcrumb-box {
   padding: 8px 0 8px 20px;
   border-left: 10px solid #f1f1f1;
-  border-top: 10px solid #f1f1f1;
+  border-top: 6px solid #f1f1f1;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.12),
     0 0 6px rgba(0, 0, 0, 0.04);
@@ -95,8 +97,15 @@ const activeMenu = computed(() => route.name)
 }
 
 .el-main {
+  padding: 0;
   margin: 6px 0 0 10px;
-  padding: 8px 10px;
   background-color: #fff;
+  position: relative;
+
+  .main-container {
+    padding: 8px 10px 0 10px;
+    height: 100%;
+    box-sizing: border-box;
+  }
 }
 </style>

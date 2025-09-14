@@ -7,6 +7,7 @@ interface AppStoreState {
   isDark: boolean
   isWatermark: boolean
   layout: string
+  size: string
 }
 
 export const useAppStore = defineStore('app', () => {
@@ -14,12 +15,14 @@ export const useAppStore = defineStore('app', () => {
   const isDark = ref(false)
   const isWatermark = ref(true)
   const layout = ref('classic')
+  const size = ref('default')
 
   const stateMap = {
     isCollapse,
     isDark,
     isWatermark,
     layout,
+    size,
   } as const
 
   function setAppSoreState<K extends keyof typeof stateMap>(key: K, value: AppStoreState[K]): void {
@@ -34,6 +37,7 @@ export const useAppStore = defineStore('app', () => {
     isDark,
     isWatermark,
     layout,
+    size,
 
     setAppSoreState,
   }
