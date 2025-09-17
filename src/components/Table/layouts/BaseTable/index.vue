@@ -1,7 +1,8 @@
 <script setup lang="tsx">
 import type { ProTableProps, TableColumnProps, TableColumnShow, TableHandleBtnList, TableHandleBtnParams } from '../../types'
 import { Operation, Refresh, Tools } from '@element-plus/icons-vue'
-import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
+import { useElementBounding, useResizeObserver } from '@vueuse/core'
+import { computed, inject, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import { columnHandleTypes, columnTypes } from '../../constant'
 import CustomColSetting from '../../tools/CustomColSetting.vue'
 import FullScreen from '../../tools/FullScreen.vue'
@@ -16,10 +17,11 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   }),
 })
 
-const emit = defineEmits(['tableHandleClick'])
+// const emit = defineEmits(['tableHandleClick'])
+
+const proTalbeContext = inject('proTableContextKey', undefined)
 
 const tableRef = useTemplateRef('tableRef')
-const iframeRef = useTemplateRef('iframeRef')
 
 // 表格自适应高度
 const tableMaxHeight = ref('auto')
@@ -41,6 +43,7 @@ const filterPermissionBtns = computed(() => {
     return btnList?.filter(item => item.permission && Boolean(item.isMore) === isMore)
   }
 })
+
 watch(() => props.tableCol, (val) => {
   tableColumns.value = val
     .map((item) => {
@@ -54,30 +57,24 @@ watch(() => props.tableCol, (val) => {
 
 onMounted(() => {
   countTableHeight()
-  console.log(iframeRef.value, 'iframeRef')
-  // if (iframeRef.value) {
-  //   console.log(iframeRef.value.contentWindow, 'iframeRef000')
-  //   iframeRef.value.contentWindow.onresize = () => {
-  //     console.log('000')
-  //   }
-  // }
-  // window.addEventListener('click', (e) => {
-  //   console.log('222', e.target.innerText)
-  //   if (['展开', '收起'].includes(e.target.innerText)) {
-  //     countTableHeight()
-  //   }
-  // })
   window.onresize = countTableHeight
+
+  // 开始监视表单元素
+  useResizeObserver(document.querySelector('.search-form-container'), () => {
+    countTableHeight()
+  })
 })
 
+// 计算表格高度
 function countTableHeight() {
-  setTimeout(() => {
-    const top = tableRef.value.$el.getBoundingClientRect().top
-    console.log(top, 'top')
+  // 获取表格距离顶部的高度
+  const { top } = useElementBounding(tableRef)
 
-    tableMaxHeight.value = `${window.innerHeight - top - 72}px`
-    console.log(tableMaxHeight.value, 'tableMaxHeight')
-  }, 10)
+  // 延时获取，避免获取不到高度且防止页面抖动
+  setTimeout(() => {
+    // 表格高度 = 可视区域高度 - 表格距离顶部的高度 - 分页高度56px
+    tableMaxHeight.value = `${window.innerHeight - top.value - 56}px`
+  }, 100)
 }
 
 function filterText(val: any) {
@@ -96,7 +93,11 @@ function showTableColumn(show: TableColumnShow | undefined) {
 }
 
 function handleBtnClick({ scope, label, key }: TableHandleBtnParams) {
-  emit('tableHandleClick', { scope, key, label })
+  console.log(proTalbeContext, 'proTalbeContext')
+
+  // emit('tableHandleClick', { scope, key, label })
+  proTalbeContext?.emit('handle-table-click', { scope, key, label })
+  // proTableContext?.emit('tableHandleClick', { scope, key, label })
 }
 
 function handleCheckboxChange(checked: Array<string>) {
@@ -105,6 +106,10 @@ function handleCheckboxChange(checked: Array<string>) {
       item.show = checked.includes(item.prop ?? '')
     }
   })
+}
+
+function a() {
+  location.reload()
 }
 </script>
 
@@ -128,12 +133,13 @@ function handleCheckboxChange(checked: Array<string>) {
       </div>
 
       <div class="table-header-right">
-        <el-button :icon="Refresh" circle />
+        <el-button :icon="Refresh" circle @click="a" />
         <FullScreen />
         <el-popover placement="bottom-end" trigger="click">
           <template #reference>
             <el-button :icon="Operation" circle />
           </template>
+
           <el-checkbox-group v-model="checkedCustomCol" @change="handleCheckboxChange">
             <el-checkbox
               v-for="item in customTableCol"
@@ -148,6 +154,7 @@ function handleCheckboxChange(checked: Array<string>) {
         <el-button :icon="Tools" circle />
       </div>
     </div>
+
     <el-table
       ref="tableRef"
       :max-height="tableMaxHeight"
@@ -197,7 +204,7 @@ function handleCheckboxChange(checked: Array<string>) {
         >
           <template #default="scope">
             <template
-              v-for="btn in filterPermissionBtns(scope.row.btnList, false)"
+              v-for="btn in filterPermissionBtns(scope.row.actionBtns, false)"
               :key="btn.key"
             >
               <el-button
@@ -214,14 +221,14 @@ function handleCheckboxChange(checked: Array<string>) {
               </el-button>
             </template>
 
-            <el-dropdown style="padding: 5px 0 0 2px;cursor: pointer;">
+            <el-dropdown style="padding: 6px 0 0 6px;cursor: pointer;">
               <el-icon color="#409eff">
                 <More />
               </el-icon>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item
-                    v-for="btn in filterPermissionBtns(scope.row.btnList, true)"
+                    v-for="btn in filterPermissionBtns(scope.row.actionBtns, true)"
                     :key="btn.key"
                   >
                     <el-button
@@ -266,6 +273,20 @@ function handleCheckboxChange(checked: Array<string>) {
     margin-bottom: 20px;
   }
 }
+
+// ::v-deep(.el-table .el-table__header th.el-table__cell) {
+//   background: #f2f3f4;
+//   color: #191919;
+//   font-size: 14px;
+//   border-radius: 4px;
+// }
+
+// .el-table__header th.el-table__cell {
+//   background: #f2f3f4;
+//   color: #191919;
+//   font-size: 14px;
+//   border-radius: 4px;
+// }
 
 /* .table-header-left {
   display: flex;

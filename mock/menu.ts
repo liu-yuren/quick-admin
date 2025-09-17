@@ -5,6 +5,7 @@ const data = [
   { id: 1, name: '系统设置', permissionCode: 'system-setting', parentId: null },
   { id: 2, name: '基本设置', permissionCode: 'base-setting', parentId: 1 },
   { id: 3, name: '用户管理', permissionCode: 'user-manage', parentId: 2 },
+  { id: 15, name: '新增', permissionCode: 'user-manage-add', parentId: 3 },
   { id: 4, name: '角色管理', permissionCode: 'role-manage', parentId: 2 },
   { id: 5, name: '权限设置', permissionCode: 'permissionCode-setting', parentId: 2 },
   { id: 6, name: '日志管理', permissionCode: 'log-manage', parentId: 1 },
@@ -21,6 +22,8 @@ const data = [
   { id: 13, name: '类目管理', permissionCode: 'category', parentId: 12 },
   { id: 14, name: '数据字典', permissionCode: 'dict', parentId: 12 },
 ]
+
+console.log(JSON.stringify(arrayToTree(data)), ' arrayToTree(data)')
 
 export default {
   url: '/api/menu/list',

@@ -20,37 +20,45 @@ async function handleClickMenu(subItem: any) {
   }
   catch (error) {
     console.warn('Failed to navigate to route:', subItem.name, error)
-    // 如果通过 name 跳转失败，尝试使用 path
-    if (subItem.path) {
-      try {
-        await router.push(subItem.path)
-      }
-      catch (pathError) {
-        console.error('Failed to navigate using path:', subItem.path, pathError)
-      }
-    }
   }
+}
+
+function isVisibleMenu(item: any) {
+  return !item?.meta?.hidden
+}
+
+function getVisibleChildren(item: any): any[] {
+  return Array.isArray(item?.children)
+    ? item.children.filter((child: any) => !child?.meta?.hidden)
+    : []
+}
+
+function hasVisibleChildren(item: any) {
+  return getVisibleChildren(item).length > 0
 }
 </script>
 
 <template>
   <template v-for="subItem in menuList" :key="subItem.name">
-    <el-sub-menu v-if="subItem.children?.length" :index="subItem.name">
-      <template #title>
+    <template v-if="isVisibleMenu(subItem)">
+      <el-sub-menu v-if="hasVisibleChildren(subItem)" :index="subItem.name">
+        <template #title>
+          <el-icon v-if="subItem.meta.icon">
+            <component :is="subItem.meta.icon" />
+          </el-icon>
+          <span class="sle">{{ subItem.meta.title }}</span>
+        </template>
+        <SubMenu :menu-list="getVisibleChildren(subItem)" />
+      </el-sub-menu>
+
+      <el-menu-item v-else :index="subItem.name" @click="handleClickMenu(subItem)">
         <el-icon v-if="subItem.meta.icon">
           <component :is="subItem.meta.icon" />
         </el-icon>
-        <span class="sle">{{ subItem.meta.title }}</span>
-      </template>
-      <SubMenu :menu-list="subItem.children" />
-    </el-sub-menu>
-    <el-menu-item v-else :index="subItem.name" @click="handleClickMenu(subItem)">
-      <el-icon v-if="subItem.meta.icon">
-        <component :is="subItem.meta.icon" />
-      </el-icon>
-      <template #title>
-        <span class="sle">{{ subItem.meta.title }}</span>
-      </template>
-    </el-menu-item>
+        <template #title>
+          <span class="sle">{{ subItem.meta.title }}</span>
+        </template>
+      </el-menu-item>
+    </template>
   </template>
 </template>

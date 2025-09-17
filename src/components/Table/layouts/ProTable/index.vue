@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import type { FormOptions } from '@/components/Form'
 import type { TableColumnProps } from '@/components/Table/types'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, provide, reactive, ref } from 'vue'
 import { SearchForm } from '@/components/Form'
 import { BaseTable } from '@/components/Table'
+import { proTableEmits } from './proTable'
+
+const emit = defineEmits(proTableEmits)
+
+console.log(emit, 'emit')
 
 const tableCol: TableColumnProps[] = [
   { type: 'selection', width: 55 },
@@ -124,13 +129,13 @@ onMounted(() => {
       b: `a${i}`,
       c: `a${i}`,
       d: `a${i}`,
-      imgUrl: 'https://test-iov-fs.smartlink.com.cn/group1/M00/01/5D/rB0eGWfPmMSAFNsZAAHaXxip9iY877.jpg',
+      // imgUrl: 'https://test-iov-fs.smartlink.com.cn/group1/M00/01/5D/rB0eGWfPmMSAFNsZAAHaXxip9iY877.jpg',
     })
   }
 
   tableData.value = tableData.value.map((item) => {
     const obj = { ...item }
-    obj.btnList = [
+    obj.actionBtns = [
       { key: 'edit', label: '编辑', permission: true },
       { key: 'status', label: '启用', permission: true },
       { key: 'status', label: '禁用', permission: true },
@@ -142,6 +147,22 @@ onMounted(() => {
     return obj
   })
 })
+
+provide(
+  'proTableContextKey',
+  reactive({
+    // ...toRefs(props),
+    emit,
+
+    // resetFields,
+    // clearValidate,
+    // validateField,
+    // getField,
+    // addField,
+    // removeField,
+    // ...useFormLabelWidth(),
+  }),
+)
 </script>
 
 <template>
@@ -154,7 +175,6 @@ onMounted(() => {
       :table-props="{
         data: tableData,
       }"
-      :table-header-btns="tableHeaderBtns"
     />
 
     <div class="common-table-page">
@@ -181,7 +201,7 @@ onMounted(() => {
   .common-table-page {
     display: flex;
     justify-content: center;
-    padding: 20px 0;
+    padding: 12px 0;
   }
 }
 </style>

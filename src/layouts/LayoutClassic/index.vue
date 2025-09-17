@@ -37,7 +37,7 @@ const activeMenu = computed(() => route.name)
     </el-aside>
 
     <el-container direction="vertical">
-      <el-header class="header-box">
+      <el-header height="70px" class="header-box">
         <CollapseIcon style="padding-right: 15px;" />
         <NavBar />
       </el-header>
@@ -104,8 +104,11 @@ const activeMenu = computed(() => route.name)
 
   .main-container {
     padding: 8px 10px 0 10px;
+    // padding: 30px 40px;
+    padding: 30px 40px;
     height: 100%;
     box-sizing: border-box;
+    overflow: hidden;
   }
 }
 </style>

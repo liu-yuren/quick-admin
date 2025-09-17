@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormOptions } from '../../types'
 import { useCssVar, useResizeObserver } from '@vueuse/core'
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, inject, onMounted, ref, useTemplateRef } from 'vue'
 import { useAppStore } from '@/stores/modules/app'
 import BaseForm from '../../BaseForm/index.vue'
 
@@ -9,7 +9,10 @@ withDefaults(defineProps<{ formOptions: FormOptions }>(), {
   formOptions: () => ({}),
 })
 
-const emit = defineEmits(['search', 'reset'])
+const proTalbeContext = inject('proTableContextKey', undefined)
+console.log(proTalbeContext, 'proTalbeContext')
+
+// const emit = defineEmits(['search', 'reset'])
 
 const appStore = useAppStore()
 
@@ -49,7 +52,7 @@ onMounted(() => {
 async function search() {
   try {
     await searchFormRef.value?.formRef.validate()
-    emit('search')
+    proTalbeContext?.emit('search')
   }
   catch (error) {
     console.error(error)
@@ -58,7 +61,7 @@ async function search() {
 
 function reset() {
   searchFormRef.value?.formRef.resetFields()
-  emit('reset')
+  proTalbeContext?.emit('reset')
 }
 </script>
 
@@ -70,7 +73,7 @@ function reset() {
         ref="searchFormRef"
         :form-options="formOptions"
         :collapsed="collapsed"
-        :style="{ height, overflow: 'hidden', transition: 'height 0.3s' }"
+        :style="{ height, overflow: 'hidden', transition: 'height 0.3s', flex: 1 }"
       />
       <div class="search-form-btns">
         <el-button type="primary" @click="search">

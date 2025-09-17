@@ -1,3 +1,4 @@
+import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 import Layout from '@/layouts/index.vue'
 
 export const echartsRoutes = [
@@ -22,6 +23,7 @@ export const echartsRoutes = [
           {
             path: 'category',
             name: 'category',
+            component: () => import('@/views/config-center/dict-config/category/index.vue'),
             meta: {
               title: '类目管理',
               permissionCode: 'category',
@@ -31,6 +33,7 @@ export const echartsRoutes = [
           {
             path: 'dict',
             name: 'dict',
+            component: () => import('@/views/config-center/dict-config/dict/index.vue'),
             meta: {
               title: '数据字典',
               permissionCode: 'dict',

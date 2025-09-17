@@ -130,7 +130,7 @@ onMounted(() => {
 
   tableData.value = tableData.value.map((item) => {
     const obj = { ...item }
-    obj.btnList = [
+    obj.actionBtns = [
       { key: 'edit', label: '编辑', permission: true },
       { key: 'status', label: '启用', permission: true },
       { key: 'status', label: '禁用', permission: true },
@@ -171,6 +171,6 @@ onMounted(() => {
 .common-table-page {
   display: flex;
   justify-content: center;
-  padding: 20px 0;
+  padding: 12px 0;
 }
 </style>
