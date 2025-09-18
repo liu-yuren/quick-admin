@@ -28,18 +28,16 @@ export const systemSettingRoutes = [
               permissionCode: 'user-manage',
               icon: 'menu',
             },
-            children: [
-              {
-                path: 'user-manage-add',
-                name: 'UserManageAdd',
-                component: () => import('@/views/systemSetting/userManage/handle.vue'),
-                meta: {
-                  title: '新增',
-                  permissionCode: 'user-manage-add',
-                  hidden: true,
-                },
-              },
-            ],
+          },
+          {
+            path: 'user-manage-add',
+            name: 'UserManageAdd',
+            component: () => import('@/views/systemSetting/userManage/handle.vue'),
+            meta: {
+              title: '新增用户',
+              permissionCode: 'user-manage-add',
+              hidden: true,
+            },
           },
           {
             path: 'role-manage',

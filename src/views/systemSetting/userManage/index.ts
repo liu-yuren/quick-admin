@@ -1,17 +1,7 @@
-<script lang="ts" setup>
 import type { FormOptions } from '@/components/Form'
-import { onMounted, provide, reactive, ref, toRefs } from 'vue'
-import { SearchForm } from '@/components/Form'
-import { BaseTable } from '@/components/Table'
-import { proTableEmits, proTableProps } from './proTable'
+import type { TableColumnProps, TableHandleBtnList } from '@/components/Table/types'
 
-const props = defineProps(proTableProps)
-const emit = defineEmits(proTableEmits)
-
-console.log(props, 'props-propTable')
-console.log(emit, 'emit-proTable')
-
-const formOptions = reactive<FormOptions>({
+export const formOptions: FormOptions = {
   showCollapse: true,
   defaultShowCount: 3,
   animationDuration: 300,
@@ -80,56 +70,23 @@ const formOptions = reactive<FormOptions>({
       colProps: { span: 12 },
     },
   ],
-})
-
-provide(
-  'proTableContextKey',
-  reactive({
-    ...toRefs(props),
-    emit,
-
-    // resetFields,
-    // clearValidate,
-    // validateField,
-    // getField,
-    // addField,
-    // removeField,
-    // ...useFormLabelWidth(),
-  }),
-)
-</script>
-
-<template>
-  <div class="pro-table-container" style="height: 100%;">
-    <SearchForm :form-options="formOptions" />
-
-    <BaseTable />
-
-    <div class="common-table-page">
-      <el-pagination
-        :page-sizes="[10, 20, 50]"
-        :background="true"
-        layout="total,sizes,prev,pager,next"
-        :total="400"
-      />
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.pro-table-container {
-  height: 100%;
-  // display: flex;
-  // flex-direction: column;
-
-  // .base-table {
-  //   flex: 1;
-  // }
-
-  .common-table-page {
-    display: flex;
-    justify-content: center;
-    padding: 12px 0;
-  }
 }
-</style>
+
+export const tableHeaderBtns: TableHandleBtnList[] = [
+  { label: '新增', key: 'add', permission: true, btnProps: { type: 'primary' } },
+  { label: '批量删除', key: 'delete', permission: true },
+  { label: '批量启用', key: 'enable', permission: true },
+  { label: '批量禁用', key: 'disable', permission: true },
+  { label: '导出', key: 'export', permission: true },
+]
+
+export const tableCol: TableColumnProps[] = [
+  { type: 'selection', width: 55 },
+  { type: 'index', label: '序号', width: 55 },
+  { label: '姓名', prop: 'a' },
+  { label: '电话', prop: 'b' },
+  { label: '年龄', prop: 'c' },
+  { label: '地址', prop: 'd' },
+  { label: '图片', prop: 'imgUrl', isImage: true },
+  { label: '操作', prop: 'handle', fixed: 'right', width: 160 },
+]

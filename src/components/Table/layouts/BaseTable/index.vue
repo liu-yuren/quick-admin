@@ -7,31 +7,36 @@ import { columnHandleTypes, columnTypes } from '../../constant'
 import CustomColSetting from '../../tools/CustomColSetting.vue'
 import FullScreen from '../../tools/FullScreen.vue'
 
-const props = withDefaults(defineProps<ProTableProps>(), {
-  tableCol: () => ([]),
-  pagination: () => ({
-    currentPage: 1,
-    pageSize: 10,
-    pageSizes: [10, 20, 50],
-    total: 0,
-  }),
-})
+// const props = withDefaults(defineProps<ProTableProps>(), {
+//   tableCol: () => ([]),
+//   pagination: () => ({
+//     currentPage: 1,
+//     pageSize: 10,
+//     pageSizes: [10, 20, 50],
+//     total: 0,
+//   }),
+// })
 
 // const emit = defineEmits(['tableHandleClick'])
 
 const proTalbeContext = inject('proTableContextKey', undefined)
+console.log(proTalbeContext, 'baseTable --- proTalbeContext')
 
 const tableRef = useTemplateRef('tableRef')
 
 // 表格自适应高度
 const tableMaxHeight = ref('auto')
 // 表格列
-const tableColumns = ref<TableColumnProps[]>([])
+const tableColumns = ref<TableColumnProps[]>(proTalbeContext?.tableCol || [])
 
 // 自定义设置表格列
-const customTableCol = computed(() => props.tableCol.filter(item => !columnTypes.includes(item.type ?? '')))
+const customTableCol = computed(() => tableColumns.value.filter(item => !columnTypes.includes(item.type ?? '')))
 const checkedCustomCol = ref<Array<string>>(customTableCol.value.map(item => item.prop ?? ''))
 
+// 表格头部-按钮
+const tableHeaderBtnList = computed(() => {
+  return proTalbeContext?.tableHeaderBtns.filter(item => item.permission)
+})
 /**
  * 过滤权限按钮
  * @param {TableHandleBtnList} btnList 按钮列表
@@ -44,16 +49,16 @@ const filterPermissionBtns = computed(() => {
   }
 })
 
-watch(() => props.tableCol, (val) => {
-  tableColumns.value = val
-    .map((item) => {
-      return {
-        ...item,
-        show: showTableColumn(item.show),
-      }
-    })
-    .filter(item => item.show)
-}, { immediate: true })
+// watch(() => props.tableCol, (val) => {
+//   tableColumns.value = val
+//     .map((item) => {
+//       return {
+//         ...item,
+//         show: showTableColumn(item.show),
+//       }
+//     })
+//     .filter(item => item.show)
+// }, { immediate: true })
 
 onMounted(() => {
   countTableHeight()
@@ -92,12 +97,8 @@ function showTableColumn(show: TableColumnShow | undefined) {
   return Boolean(show)
 }
 
-function handleBtnClick({ scope, label, key }: TableHandleBtnParams) {
-  console.log(proTalbeContext, 'proTalbeContext')
-
-  // emit('tableHandleClick', { scope, key, label })
-  proTalbeContext?.emit('handle-table-click', { scope, key, label })
-  // proTableContext?.emit('tableHandleClick', { scope, key, label })
+function tableHandleClick({ scope, label, key }: TableHandleBtnParams) {
+  proTalbeContext?.emit('table-handle-click', { scope, key, label })
 }
 
 function handleCheckboxChange(checked: Array<string>) {
@@ -117,11 +118,14 @@ function a() {
   <div class="base-table-container">
     <div class="table-header-box">
       <div class="table-header-left">
-        <template v-for="item in filterPermissionBtns(tableHeaderBtns, false)" :key="item.key">
+        <template
+          v-for="item in tableHeaderBtnList"
+          :key="item.key"
+        >
           <el-button
             v-if="item.permission"
             v-bind="item.btnProps"
-            @click="handleBtnClick({
+            @click="tableHandleClick({
               scope: {},
               label: item.label,
               key: item.key,
@@ -160,7 +164,7 @@ function a() {
       :max-height="tableMaxHeight"
       border
       stripe
-      v-bind="tableProps"
+      v-bind="proTalbeContext?.tableProps"
     >
       <template v-for="item in tableColumns" :key="item.prop">
         <el-table-column
@@ -211,7 +215,7 @@ function a() {
                 link
                 type="primary"
                 size="small"
-                @click="handleBtnClick({
+                @click="tableHandleClick({
                   scope,
                   label: btn.label,
                   key: btn.key,
@@ -235,7 +239,7 @@ function a() {
                       link
                       type="primary"
                       size="small"
-                      @click="handleBtnClick({
+                      @click="tableHandleClick({
                         scope,
                         label: btn.label,
                         key: btn.key,

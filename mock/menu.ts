@@ -23,8 +23,6 @@ const data = [
   { id: 14, name: '数据字典', permissionCode: 'dict', parentId: 12 },
 ]
 
-console.log(JSON.stringify(arrayToTree(data)), ' arrayToTree(data)')
-
 export default {
   url: '/api/menu/list',
   method: 'post',

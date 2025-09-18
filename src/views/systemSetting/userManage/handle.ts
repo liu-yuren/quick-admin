@@ -1,22 +1,16 @@
-<script lang="ts" setup>
 import type { FormOptions } from '@/components/Form'
-import { onMounted, provide, reactive, ref, toRefs } from 'vue'
-import { SearchForm } from '@/components/Form'
-import { BaseTable } from '@/components/Table'
-import { proTableEmits, proTableProps } from './proTable'
 
-const props = defineProps(proTableProps)
-const emit = defineEmits(proTableEmits)
-
-console.log(props, 'props-propTable')
-console.log(emit, 'emit-proTable')
-
-const formOptions = reactive<FormOptions>({
+export const formOptions: FormOptions = {
   showCollapse: true,
   defaultShowCount: 3,
   animationDuration: 300,
   formProps: { size: 'default', labelWidth: 'auto' } as any,
   formFields: [
+    {
+      component: 'title',
+      colProps: { span: 24 },
+      title: '基本信息',
+    },
     {
       component: 'el-input',
       componentProps: {
@@ -27,7 +21,7 @@ const formOptions = reactive<FormOptions>({
         prop: 'username',
         rules: [{ required: true }],
       },
-      colProps: { span: 6 },
+      colProps: { span: 12 },
     },
     {
       component: 'el-input',
@@ -38,7 +32,7 @@ const formOptions = reactive<FormOptions>({
         label: '邮箱',
         prop: 'email',
       },
-      colProps: { span: 6 },
+      colProps: { span: 12 },
     },
     {
       component: 'el-select',
@@ -50,7 +44,7 @@ const formOptions = reactive<FormOptions>({
         label: '状态',
         prop: 'status',
       },
-      colProps: { span: 6 },
+      colProps: { span: 12 },
     },
     {
       component: 'el-input',
@@ -61,7 +55,7 @@ const formOptions = reactive<FormOptions>({
         label: '手机号',
         prop: 'phone',
       },
-      colProps: { span: 6 },
+      colProps: { span: 12 },
     },
     {
       component: 'el-date-picker',
@@ -80,56 +74,4 @@ const formOptions = reactive<FormOptions>({
       colProps: { span: 12 },
     },
   ],
-})
-
-provide(
-  'proTableContextKey',
-  reactive({
-    ...toRefs(props),
-    emit,
-
-    // resetFields,
-    // clearValidate,
-    // validateField,
-    // getField,
-    // addField,
-    // removeField,
-    // ...useFormLabelWidth(),
-  }),
-)
-</script>
-
-<template>
-  <div class="pro-table-container" style="height: 100%;">
-    <SearchForm :form-options="formOptions" />
-
-    <BaseTable />
-
-    <div class="common-table-page">
-      <el-pagination
-        :page-sizes="[10, 20, 50]"
-        :background="true"
-        layout="total,sizes,prev,pager,next"
-        :total="400"
-      />
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.pro-table-container {
-  height: 100%;
-  // display: flex;
-  // flex-direction: column;
-
-  // .base-table {
-  //   flex: 1;
-  // }
-
-  .common-table-page {
-    display: flex;
-    justify-content: center;
-    padding: 12px 0;
-  }
 }
-</style>

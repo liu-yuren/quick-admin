@@ -27,5 +27,5 @@ export interface TableHandleBtnList {
   label: string
   permission?: boolean
   btnProps?: ButtonProps
-  isMore: boolean
+  isMore?: boolean
 }
