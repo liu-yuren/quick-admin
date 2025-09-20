@@ -2,6 +2,7 @@
 import type { FormOptions } from '../types'
 import { computed, ref, useTemplateRef } from 'vue'
 import FormGroupTitle from '@/components/Form/components/FormGroupTitle/index.vue'
+import router from '@/router'
 import { useAppStore } from '@/stores/modules/app'
 
 const _props = withDefaults(defineProps<{
@@ -66,6 +67,10 @@ defineExpose({
 
       <slot />
     </el-row>
+
+    <el-button @click="router.back()">
+      返回
+    </el-button>
   </el-form>
 </template>
 

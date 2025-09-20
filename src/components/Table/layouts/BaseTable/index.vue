@@ -1,44 +1,29 @@
 <script setup lang="tsx">
-import type { ProTableProps, TableColumnProps, TableColumnShow, TableHandleBtnList, TableHandleBtnParams } from '../../types'
-import { Operation, Refresh, Tools } from '@element-plus/icons-vue'
-import { useElementBounding, useResizeObserver } from '@vueuse/core'
-import { computed, inject, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
-import { columnHandleTypes, columnTypes } from '../../constant'
-import CustomColSetting from '../../tools/CustomColSetting.vue'
-import FullScreen from '../../tools/FullScreen.vue'
-
-// const props = withDefaults(defineProps<ProTableProps>(), {
-//   tableCol: () => ([]),
-//   pagination: () => ({
-//     currentPage: 1,
-//     pageSize: 10,
-//     pageSizes: [10, 20, 50],
-//     total: 0,
-//   }),
-// })
-
-// const emit = defineEmits(['tableHandleClick'])
-
-const proTalbeContext = inject('proTableContextKey', undefined)
-console.log(proTalbeContext, 'baseTable --- proTalbeContext')
+import type { HandleTableActionParams, TableColumnProps, TableColumnShow, TableHandleBtnList } from '../../types'
+import { computed, inject, onMounted, ref, useTemplateRef } from 'vue'
+import { proTableContextKey } from '../../constant'
+import { useTableHeight } from '../../hooks/useTableHeight'
+import { CustomColSetting, FullScreen, Refresh } from '../../tools'
 
 const tableRef = useTemplateRef('tableRef')
 
-// 表格自适应高度
-const tableMaxHeight = ref('auto')
-// 表格列
-const tableColumns = ref<TableColumnProps[]>(proTalbeContext?.tableCol || [])
+const proTalbeContext = inject(proTableContextKey, undefined)
+const { tableMaxHeight } = useTableHeight(tableRef)
 
-// 自定义设置表格列
-const customTableCol = computed(() => tableColumns.value.filter(item => !columnTypes.includes(item.type ?? '')))
-const checkedCustomCol = ref<Array<string>>(customTableCol.value.map(item => item.prop ?? ''))
+const tableCol = ref<TableColumnProps[]>([])
 
-// 表格头部-按钮
-const tableHeaderBtnList = computed(() => {
-  return proTalbeContext?.tableHeaderBtns.filter(item => item.permission)
+// 可见表格列（过滤显示状态）
+const visibleColumns = computed(() => {
+  return tableCol.value.filter(item => item.show)
 })
+
+// 表格头部按钮（已过滤权限）
+const headerBtns = computed(() => {
+  return proTalbeContext?.tableHeaderBtns?.filter(item => item.permission) ?? []
+})
+
 /**
- * 过滤权限按钮
+ * 表格操作列---过滤权限按钮
  * @param {TableHandleBtnList} btnList 按钮列表
  * @param {boolean} isMore 是否包含在更多按钮中
  * @returns {TableHandleBtnList}
@@ -49,45 +34,29 @@ const filterPermissionBtns = computed(() => {
   }
 })
 
-// watch(() => props.tableCol, (val) => {
-//   tableColumns.value = val
-//     .map((item) => {
-//       return {
-//         ...item,
-//         show: showTableColumn(item.show),
-//       }
-//     })
-//     .filter(item => item.show)
-// }, { immediate: true })
-
 onMounted(() => {
-  countTableHeight()
-  window.onresize = countTableHeight
-
-  // 开始监视表单元素
-  useResizeObserver(document.querySelector('.search-form-container'), () => {
-    countTableHeight()
-  })
+  // 初始化表格列
+  tableCol.value = proTalbeContext?.tableCol?.map(item => ({
+    ...item,
+    show: shouldColumnShow(item.show),
+  })) || []
 })
 
-// 计算表格高度
-function countTableHeight() {
-  // 获取表格距离顶部的高度
-  const { top } = useElementBounding(tableRef)
-
-  // 延时获取，避免获取不到高度且防止页面抖动
-  setTimeout(() => {
-    // 表格高度 = 可视区域高度 - 表格距离顶部的高度 - 分页高度56px
-    tableMaxHeight.value = `${window.innerHeight - top.value - 56}px`
-  }, 100)
+// 格式化，空字符串则返回'-'
+function formatEmptyValue(val: any) {
+  if (typeof val === 'string' && !val.trim()) {
+    return '-'
+  }
+  return val
 }
 
-function filterText(val: any) {
-  // 如果值为空，则返回'-'
-  return ['', null, undefined].includes(val) ? '-' : val
-}
-
-function showTableColumn(show: TableColumnShow | undefined) {
+/**
+ * 表格列---是否显示
+ * @param show 列显示配置，可以是布尔值、函数或未定义
+ * @returns 如果列应该显示则返回true，否则返回false
+ */
+function shouldColumnShow(show: TableColumnShow | undefined) {
+  // 如果未定义显示配置，默认显示列
   if (typeof show === 'undefined') {
     return true
   }
@@ -97,20 +66,12 @@ function showTableColumn(show: TableColumnShow | undefined) {
   return Boolean(show)
 }
 
-function tableHandleClick({ scope, label, key }: TableHandleBtnParams) {
-  proTalbeContext?.emit('table-handle-click', { scope, key, label })
-}
-
-function handleCheckboxChange(checked: Array<string>) {
-  tableColumns.value.forEach((item) => {
-    if (customTableCol.value.some(v => v.label === item.label)) {
-      item.show = checked.includes(item.prop ?? '')
-    }
-  })
-}
-
-function a() {
-  location.reload()
+/**
+ * 表格操作列---按钮点击事件
+ * @param {HandleTableActionParams} params 按钮点击参数
+ */
+function handleTableAction(params: HandleTableActionParams) {
+  proTalbeContext?.emit('handle-table-action', params)
 }
 </script>
 
@@ -119,13 +80,13 @@ function a() {
     <div class="table-header-box">
       <div class="table-header-left">
         <template
-          v-for="item in tableHeaderBtnList"
+          v-for="item in headerBtns"
           :key="item.key"
         >
           <el-button
             v-if="item.permission"
             v-bind="item.btnProps"
-            @click="tableHandleClick({
+            @click="handleTableAction({
               scope: {},
               label: item.label,
               key: item.key,
@@ -137,25 +98,9 @@ function a() {
       </div>
 
       <div class="table-header-right">
-        <el-button :icon="Refresh" circle @click="a" />
+        <Refresh />
         <FullScreen />
-        <el-popover placement="bottom-end" trigger="click">
-          <template #reference>
-            <el-button :icon="Operation" circle />
-          </template>
-
-          <el-checkbox-group v-model="checkedCustomCol" @change="handleCheckboxChange">
-            <el-checkbox
-              v-for="item in customTableCol"
-              :key="item.prop"
-              :label="item.prop"
-              :disabled="columnHandleTypes.includes(item.prop ?? '')"
-            >
-              {{ item.label }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </el-popover>
-        <el-button :icon="Tools" circle />
+        <CustomColSetting v-model:table-col="tableCol" />
       </div>
     </div>
 
@@ -166,9 +111,9 @@ function a() {
       stripe
       v-bind="proTalbeContext?.tableProps"
     >
-      <template v-for="item in tableColumns" :key="item.prop">
+      <template v-for="item in visibleColumns" :key="item.prop">
         <el-table-column
-          v-if="showTableColumn(item.show) && item.prop !== 'handle'"
+          v-if="item.prop !== 'handle'"
           align="center"
           v-bind="item"
         >
@@ -181,7 +126,7 @@ function a() {
                   && !item.isImage
               "
             >
-              <span class="over-hidden">{{ filterText(scope.row[item.prop || '']) }}</span>
+              <span class="over-hidden">{{ formatEmptyValue(scope.row[item.prop || '']) }}</span>
               <span v-if="item.unit">{{ item.unit }}</span>
             </template>
 
@@ -215,7 +160,7 @@ function a() {
                 link
                 type="primary"
                 size="small"
-                @click="tableHandleClick({
+                @click="handleTableAction({
                   scope,
                   label: btn.label,
                   key: btn.key,
@@ -239,7 +184,7 @@ function a() {
                       link
                       type="primary"
                       size="small"
-                      @click="tableHandleClick({
+                      @click="handleTableAction({
                         scope,
                         label: btn.label,
                         key: btn.key,

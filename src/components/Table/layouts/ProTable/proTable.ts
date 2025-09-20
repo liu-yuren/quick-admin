@@ -1,5 +1,5 @@
 import type { ExtractPropTypes, PropType } from 'vue'
-import type { TableColumnProps, TableHandleBtnList } from '../../types'
+import type { HandleTableActionParams, TableColumnProps, TableHandleBtnList } from '../../types'
 import { definePropType } from '@/components/utils'
 
 export const proTableProps = {
@@ -30,7 +30,7 @@ export const proTableEmits = {
   'reset': () => true,
 
   // table event
-  'table-handle-click': (_scope: any) => true,
+  'handle-table-action': (_scope: HandleTableActionParams) => true,
 } as const
 
 export type ProTableProps = ExtractPropTypes<typeof proTableProps>

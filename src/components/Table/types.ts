@@ -1,4 +1,6 @@
 import type { ButtonProps, TableColumnInstance, TableProps } from 'element-plus'
+import type { SetupContext } from 'vue'
+import type { ProTableEmits } from './layouts/ProTable/proTable'
 
 export type TableColumnShow = boolean | (() => boolean)
 
@@ -16,7 +18,7 @@ export interface ProTableProps {
   tableCol?: Array<TableColumnProps>
 }
 
-export interface TableHandleBtnParams<T = any> {
+export interface HandleTableActionParams<T = any> {
   scope: { row?: T }
   key: string
   label: string
@@ -28,4 +30,8 @@ export interface TableHandleBtnList {
   permission?: boolean
   btnProps?: ButtonProps
   isMore?: boolean
+}
+
+export interface ProTableContextKey extends ProTableProps {
+  emit: SetupContext<ProTableEmits>['emit']
 }

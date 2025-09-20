@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { TableHandleBtnParams } from '@/components/Table/types'
+import type { HandleTableActionParams } from '@/components/Table/types'
 import { onMounted, ref } from 'vue'
 import { ProTable } from '@/components/Table'
 import router from '@/router'
@@ -10,8 +10,8 @@ const tableData = ref<any[]>([])
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
     tableData.value.push({
-      a: `a${i}`,
-      b: `a${i}`,
+      a: i,
+      b: ``,
       c: `a${i}`,
       d: `a${i}`,
       // imgUrl: 'https://test-iov-fs.smartlink.com.cn/group1/M00/01/5D/rB0eGWfPmMSAFNsZAAHaXxip9iY877.jpg',
@@ -33,7 +33,7 @@ onMounted(() => {
   })
 })
 
-function handleTableClick(scope: TableHandleBtnParams) {
+function handleTableClick(scope: HandleTableActionParams) {
   const { key } = scope
   switch (key) {
     case 'add':
@@ -54,15 +54,16 @@ function reset() {
 <template>
   <div class="user-manage-container">
     <ProTable
+      v-if="$route.name === 'UserManage'"
       :form-options="formOptions"
       :table-props="{ data: tableData }"
       :table-col="tableCol"
       :table-header-btns="tableHeaderBtns"
       @search="search"
       @reset="reset"
-      @table-handle-click="handleTableClick"
+      @handle-table-action="handleTableClick"
     />
-    
+
     <!-- 子路由渲染区域 -->
     <router-view />
   </div>

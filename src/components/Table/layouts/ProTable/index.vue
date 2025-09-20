@@ -1,107 +1,25 @@
 <script lang="ts" setup>
-import type { FormOptions } from '@/components/Form'
-import { onMounted, provide, reactive, ref, toRefs } from 'vue'
+import { provide, reactive, toRefs } from 'vue'
 import { SearchForm } from '@/components/Form'
 import { BaseTable } from '@/components/Table'
+import { proTableContextKey } from '../../constant'
 import { proTableEmits, proTableProps } from './proTable'
 
 const props = defineProps(proTableProps)
 const emit = defineEmits(proTableEmits)
 
-console.log(props, 'props-propTable')
-console.log(emit, 'emit-proTable')
-
-const formOptions = reactive<FormOptions>({
-  showCollapse: true,
-  defaultShowCount: 3,
-  animationDuration: 300,
-  formProps: { size: 'default', labelWidth: 'auto' } as any,
-  formFields: [
-    {
-      component: 'el-input',
-      componentProps: {
-        placeholder: '请输入用户名',
-      },
-      formItemProps: {
-        label: '用户名',
-        prop: 'username',
-        rules: [{ required: true }],
-      },
-      colProps: { span: 6 },
-    },
-    {
-      component: 'el-input',
-      componentProps: {
-        placeholder: '请输入邮箱',
-      },
-      formItemProps: {
-        label: '邮箱',
-        prop: 'email',
-      },
-      colProps: { span: 6 },
-    },
-    {
-      component: 'el-select',
-      componentProps: {
-        placeholder: '请选择状态',
-        clearable: true,
-      },
-      formItemProps: {
-        label: '状态',
-        prop: 'status',
-      },
-      colProps: { span: 6 },
-    },
-    {
-      component: 'el-input',
-      componentProps: {
-        placeholder: '请输入手机号',
-      },
-      formItemProps: {
-        label: '手机号',
-        prop: 'phone',
-      },
-      colProps: { span: 6 },
-    },
-    {
-      component: 'el-date-picker',
-      componentProps: {
-        'type': 'daterange',
-        'range-separator': '至',
-        'start-placeholder': '开始日期',
-        'end-placeholder': '结束日期',
-        'format': 'YYYY-MM-DD',
-        'value-format': 'YYYY-MM-DD',
-      },
-      formItemProps: {
-        label: '创建时间',
-        prop: 'createTime',
-      },
-      colProps: { span: 12 },
-    },
-  ],
-})
-
 provide(
-  'proTableContextKey',
+  proTableContextKey,
   reactive({
     ...toRefs(props),
     emit,
-
-    // resetFields,
-    // clearValidate,
-    // validateField,
-    // getField,
-    // addField,
-    // removeField,
-    // ...useFormLabelWidth(),
   }),
 )
 </script>
 
 <template>
   <div class="pro-table-container" style="height: 100%;">
-    <SearchForm :form-options="formOptions" />
+    <SearchForm :form-options="props.formOptions" />
 
     <BaseTable />
 
@@ -117,19 +35,9 @@ provide(
 </template>
 
 <style lang="scss" scoped>
-.pro-table-container {
-  height: 100%;
-  // display: flex;
-  // flex-direction: column;
-
-  // .base-table {
-  //   flex: 1;
-  // }
-
-  .common-table-page {
-    display: flex;
-    justify-content: center;
-    padding: 12px 0;
-  }
+.common-table-page {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
 }
 </style>
