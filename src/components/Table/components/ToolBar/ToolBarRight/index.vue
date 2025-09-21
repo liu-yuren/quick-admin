@@ -48,9 +48,8 @@ function refreshTable() {
 </script>
 
 <template>
-  <div class="table-tool-bar-right">
+  <div class="table-tool-bar-right" style="display: flex;">
     <el-tooltip
-      class="box-item"
       effect="dark"
       content="刷新"
       placement="top"
@@ -59,7 +58,6 @@ function refreshTable() {
     </el-tooltip>
 
     <el-tooltip
-      class="box-item"
       effect="dark"
       :content="!isFullscreen ? '全屏' : '退出全屏'"
       placement="top"
@@ -67,21 +65,29 @@ function refreshTable() {
       <el-button :icon="FullScreen" circle @click="toggle" />
     </el-tooltip>
 
-    <el-popover placement="bottom-end" trigger="click">
-      <template #reference>
-        <el-button :icon="Setting" circle />
-      </template>
+    <el-tooltip
+      effect="dark"
+      content="列设置"
+      placement="top"
+    >
+      <el-button circle>
+        <el-popover placement="bottom-end" trigger="click">
+          <template #reference>
+            <el-button :icon="Setting" circle />
+          </template>
 
-      <el-checkbox-group v-model="checkedCustomCol">
-        <el-checkbox
-          v-for="item in customTableCol"
-          :key="item.prop"
-          :label="item.prop"
-          :disabled="columnHandleTypes.includes(item.prop ?? '')"
-        >
-          {{ item.label }}
-        </el-checkbox>
-      </el-checkbox-group>
-    </el-popover>
+          <el-checkbox-group v-model="checkedCustomCol">
+            <el-checkbox
+              v-for="item in customTableCol"
+              :key="item.prop"
+              :label="item.prop"
+              :disabled="columnHandleTypes.includes(item.prop ?? '')"
+            >
+              {{ item.label }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-popover>
+      </el-button>
+    </el-tooltip>
   </div>
 </template>
