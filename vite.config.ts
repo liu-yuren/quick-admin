@@ -9,7 +9,7 @@ export default defineConfig(({ command, mode }: ConfigEnv): UserConfig => {
   console.log(command, 'command')
   console.log(mode, 'mode')
   return {
-    base: '/quick-admin/',
+    base: mode === 'development' ?  '' : '/quick-admin/',
     plugins: [
       vue(),
       vueJsx(),

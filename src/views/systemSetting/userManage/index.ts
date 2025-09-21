@@ -1,5 +1,5 @@
 import type { FormOptions } from '@/components/Form'
-import type { TableColumnProps, TableHandleBtnList } from '@/components/Table/types'
+import type { TableColumnProps, TableToolBarBtns } from '@/components/Table/types'
 
 export const formOptions: FormOptions = {
   showCollapse: true,
@@ -72,7 +72,7 @@ export const formOptions: FormOptions = {
   ],
 }
 
-export const tableHeaderBtns: TableHandleBtnList[] = [
+export const tableHeaderBtns: TableToolBarBtns[] = [
   { label: '新增', key: 'add', permission: true, btnProps: { type: 'primary' } },
   { label: '批量删除', key: 'delete', permission: true },
   { label: '批量启用', key: 'enable', permission: true },
@@ -82,7 +82,10 @@ export const tableHeaderBtns: TableHandleBtnList[] = [
 
 export const tableCol: TableColumnProps[] = [
   { type: 'selection', width: 55 },
+  { type: 'radio', width: 55 },
+  { type: 'default', width: 55 },
   { type: 'index', label: '序号', width: 55 },
+  { type: 'sort', label: '排序', width: 65 },
   { label: '姓名', prop: 'a' },
   { label: '电话', prop: 'b' },
   { label: '年龄', prop: 'c' },

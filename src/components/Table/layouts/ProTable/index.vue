@@ -1,12 +1,15 @@
 <script lang="ts" setup>
+import type { ProTableEmits, ProTableProps } from '../../BaseTable/types'
 import { provide, reactive, toRefs } from 'vue'
 import { SearchForm } from '@/components/Form'
 import { BaseTable } from '@/components/Table'
-import { proTableContextKey } from '../../constant'
-import { proTableEmits, proTableProps } from './proTable'
+import { proTableContextKey } from '../../BaseTable/constant'
 
-const props = defineProps(proTableProps)
-const emit = defineEmits(proTableEmits)
+const props = withDefaults(defineProps<ProTableProps>(), {
+  formOptions: () => ({}),
+  tableProps: () => ({}),
+})
+const emit = defineEmits<ProTableEmits>()
 
 provide(
   proTableContextKey,

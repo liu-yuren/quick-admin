@@ -10,11 +10,12 @@ const tableData = ref<any[]>([])
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
     tableData.value.push({
+      id: i + 1,
       a: i,
       b: ``,
       c: `a${i}`,
       d: `a${i}`,
-      // imgUrl: 'https://test-iov-fs.smartlink.com.cn/group1/M00/01/5D/rB0eGWfPmMSAFNsZAAHaXxip9iY877.jpg',
+      imgUrl: 'https://test-iov-fs.smartlink.com.cn/group1/M00/01/5D/rB0eGWfPmMSAFNsZAAHaXxip9iY877.jpg',
     })
   }
 
@@ -24,16 +25,18 @@ onMounted(() => {
       { key: 'edit', label: '编辑', permission: true },
       { key: 'status', label: '启用', permission: true },
       { key: 'status', label: '禁用', permission: true },
-      { key: 'delete', label: '删除', isMore: true, permission: true },
-      { key: 'permission1', label: '分配', isMore: true, permission: true },
-      { key: 'permission2', label: '权限', isMore: true, permission: true },
+      { key: 'delete', label: '删除', isDropdown: true, permission: true },
+      { key: 'permission1', label: '分配', isDropdown: true, permission: true },
+      { key: 'permission2', label: '权限', isDropdown: true, permission: true },
     ]
 
     return obj
   })
 })
 
-function handleTableClick(scope: HandleTableActionParams) {
+function handleTableAction(scope: HandleTableActionParams) {
+  console.log(scope, 'handleTableAction')
+
   const { key } = scope
   switch (key) {
     case 'add':
@@ -49,6 +52,16 @@ function search(_params: any) {
 function reset() {
   // 重置逻辑
 }
+
+function handleSelectionChange(val) {
+  // 选中逻辑
+  console.log(val, 'val==')
+}
+
+function dragSort(params) {
+  console.log(params, 'params');
+  
+}
 </script>
 
 <template>
@@ -56,12 +69,17 @@ function reset() {
     <ProTable
       v-if="$route.name === 'UserManage'"
       :form-options="formOptions"
-      :table-props="{ data: tableData }"
+      :table-props="{
+        data: tableData,
+        rowKey: 'id',
+        onSelectionChange: handleSelectionChange,
+      }"
       :table-col="tableCol"
       :table-header-btns="tableHeaderBtns"
       @search="search"
       @reset="reset"
-      @handle-table-action="handleTableClick"
+      @handle-table-action="handleTableAction"
+      @drag-sort="dragSort"
     />
 
     <!-- 子路由渲染区域 -->
