@@ -48,7 +48,7 @@ function refreshTable() {
 </script>
 
 <template>
-  <div class="table-tool-bar-right" style="display: flex;">
+  <div class="table-tool-bar-right">
     <el-tooltip
       effect="dark"
       content="刷新"
