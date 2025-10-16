@@ -20,6 +20,8 @@ export const allAsyncRoutes = Object.keys(modules).map((path) => {
   return []
 }).flat()
 
+console.log(allAsyncRoutes, 'allAsyncRoutes')
+
 /**
  * @description 基础静态路由配置
  * @note 这些路由不需要权限验证，所有用户都可以访问
@@ -32,6 +34,14 @@ export const staticRoutes = [
   {
     path: '/login',
     component: () => import('../views/Login.vue'),
+  },
+  {
+    path: '/form-demo',
+    component: () => import('../views/demo/form.vue'),
+  },
+  {
+    path: '/crud-demo',
+    component: () => import('../views/demo/crud.vue'),
   },
 ]
 
@@ -59,7 +69,12 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
+  console.log(to.path, 'to.path')
+
   const currentPath = to.path.split('/')[1]
+
+  console.log(currentPath, 'currentPath')
+
   authStore.setMenuList(`/${currentPath}`)
 
   // 如果没有菜单列表，就重新请求菜单列表并添加动态路由
