@@ -86,5 +86,6 @@ function increSchema() {
   height: 100%;
   background-color: #fff;
   box-sizing: border-box;
+  overflow: auto;
 }
 </style>

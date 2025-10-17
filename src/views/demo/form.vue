@@ -2,7 +2,7 @@
 import type { FormOptions } from '@/components/Form'
 import { Plus } from '@element-plus/icons-vue'
 import { reactive } from 'vue'
-import { SchemaForm } from '@/components/Form'
+import { SchemaForm, updateFormSchema } from '@/components/Form'
 
 const formOptions = reactive<FormOptions>({
   model: {},
@@ -17,7 +17,7 @@ const formOptions = reactive<FormOptions>({
       },
       dependencies: {
         required() {},
-        label() {}
+        label() {},
       },
       show: (model) => {
         return model.password
@@ -494,6 +494,14 @@ function checkDate(_rule: any, value: any, callback: any) {
     callback()
   }
 }
+
+function updateFormSchemaFn() {
+  updateFormSchema(formOptions.schema, {
+    textarea: {
+      label: '123',
+    },
+  })
+}
 </script>
 
 <template>
@@ -505,6 +513,10 @@ function checkDate(_rule: any, value: any, callback: any) {
 
     <el-button @click="formOptions.size = 'small'">
       更新size
+    </el-button>
+
+    <el-button @click="updateFormSchemaFn">
+      更新 FormSchema
     </el-button>
 
     <hr>
@@ -532,5 +544,6 @@ function checkDate(_rule: any, value: any, callback: any) {
   height: 100%;
   background-color: #fff;
   box-sizing: border-box;
+  overflow: auto;
 }
 </style>

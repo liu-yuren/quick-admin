@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HandleTableActionParams } from '@/components/Table/types'
 import { computed, inject } from 'vue'
-import { proTableContextKey } from '../../../BaseTable/constant'
+import { proTableContextKey } from '../../../constant'
 
 const proTalbeContext = inject(proTableContextKey, undefined)
 

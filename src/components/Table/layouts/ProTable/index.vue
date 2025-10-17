@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { ProTableEmits, ProTableProps } from '../../BaseTable/types'
+import type { ProTableEmits, ProTableProps } from '../../types'
 import { provide, reactive, toRefs } from 'vue'
 import { SearchForm } from '@/components/Form'
-import { BaseTable } from '@/components/Table'
-import { proTableContextKey } from '../../BaseTable/constant'
+import { BasicTable } from '@/components/Table'
+import { proTableContextKey } from '../../constant'
 
 const props = withDefaults(defineProps<ProTableProps>(), {
   formOptions: () => ({}),
@@ -24,7 +24,7 @@ provide(
   <div class="pro-table-container" style="height: 100%;">
     <SearchForm :form-options="props.formOptions" />
 
-    <BaseTable />
+    <BasicTable />
 
     <div class="common-table-page">
       <el-pagination

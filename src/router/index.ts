@@ -43,6 +43,10 @@ export const staticRoutes = [
     path: '/crud-demo',
     component: () => import('../views/demo/crud.vue'),
   },
+  {
+    path: '/table-demo',
+    component: () => import('../views/demo/table.vue'),
+  },
 ]
 
 /**

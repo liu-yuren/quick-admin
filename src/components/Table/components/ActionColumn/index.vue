@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HandleTableActionParams, TableToolBarBtns } from '../../types'
 import { inject } from 'vue'
-import { proTableContextKey } from '../../BaseTable/constant'
+import { proTableContextKey } from '../../constant'
 
 const proTalbeContext = inject(proTableContextKey, undefined)
 
@@ -44,6 +44,7 @@ function handleTableAction(params: HandleTableActionParams): void {
           link
           type="primary"
           size="small"
+          v-bind="btn.btnProps"
           @click="handleTableAction({
             scope,
             label: btn.label,
@@ -71,6 +72,7 @@ function handleTableAction(params: HandleTableActionParams): void {
                 link
                 type="primary"
                 size="small"
+                v-bind="btn.btnProps"
                 @click="handleTableAction({
                   scope,
                   label: btn.label,

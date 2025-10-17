@@ -3,7 +3,7 @@ import type { FormOptions } from '@/components/Form'
 import type { TableColumnProps } from '@/components/Table/types'
 import { onMounted, reactive, ref } from 'vue'
 import { SearchForm } from '@/components/Form'
-import { BaseTable } from '@/components/Table'
+import { BasicTable } from '@/components/Table'
 
 const tableCol: TableColumnProps[] = [
   { type: 'selection', width: 55 },
@@ -148,7 +148,7 @@ onMounted(() => {
   <div style="height: 100%;">
     <SearchForm :form-options="formOptions" />
 
-    <BaseTable
+    <BasicTable
       :table-col="tableCol"
       :table-props="{
         data: tableData,

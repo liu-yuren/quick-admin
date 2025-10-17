@@ -3,7 +3,7 @@ import type { TableColumnProps } from '@/components/Table/types'
 import { FullScreen, Refresh, Setting } from '@element-plus/icons-vue'
 import { useFullscreen } from '@vueuse/core'
 import { computed } from 'vue'
-import { columnHandleTypes, columnTypes } from '@/components/Table/BaseTable/constant'
+import { columnHandleTypes, columnTypes } from '@/components/Table/constant'
 
 const tableCol = defineModel<TableColumnProps[]>('tableCol')
 
