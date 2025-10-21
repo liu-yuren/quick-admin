@@ -7,7 +7,13 @@ import { componentMap, defaultComponentProps } from '../constant'
 const props = defineProps<{ formOptions: FormOptions }>()
 const emit = defineEmits(['submit'])
 
-const { model, schema, gutter, wrapperCol = { xs: 24 }, ...args } = toRefs(props.formOptions)
+const {
+  model,
+  schema,
+  gutter,
+  wrapperCol = { xs: 24 },
+  ...args
+} = toRefs(props.formOptions)
 
 const formRef = useTemplateRef('formRef')
 
@@ -37,11 +43,16 @@ function isColVisible(item: FormSchema) {
 
 // 动态解析组件
 function resolveComponent(item: FormSchema) {
-  if (typeof item.component === 'string') {
-    return componentMap[item.component]
+  const component = typeof item.component === 'string'
+    ? componentMap[item.component]
+    : item.component
+
+  if (!component) {
+    // 组件未注册
+    console.warn(`Component ${component} is not registered`)
   }
 
-  return item.component
+  return component
 }
 
 // 合并组件的默认属性和自定义属性
@@ -49,7 +60,10 @@ function mergeComponentProps(item: FormSchema) {
   // 如果组件是字符串类型（预设组件）
   if (typeof item.component === 'string') {
     // 获取默认属性
-    const props = defaultComponentProps.get(item.component) ?? {}
+    const defaultProps = defaultComponentProps.get(item.component) ?? {}
+    const props = {
+      ...defaultProps,
+    }
 
     // 特殊处理图片上传组件
     if (item.component === 'ImgUpload') {
