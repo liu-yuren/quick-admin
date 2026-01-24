@@ -48,6 +48,10 @@ export const staticRoutes = [
     path: '/table-demo',
     component: () => import('../views/demo/table.vue'),
   },
+  {
+    path: '/grid-demo',
+    component: () => import('../views/demo/grid.vue'),
+  },
 ]
 
 /**
