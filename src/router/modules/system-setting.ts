@@ -52,6 +52,16 @@ export const systemSettingRoutes = [
             },
           },
           {
+            path: 'demo',
+            name: 'demo',
+            component: () => import('@/views/systemSetting/demo.vue'),
+            meta: {
+              title: 'demo',
+              permissionCode: 'role-manage',
+              icon: 'menu',
+            },
+          },
+          {
             path: 'permissionCode-setting',
             name: 'permissionCodeSetting',
             component: () => import('@/views/systemSetting/permission/index.vue'),

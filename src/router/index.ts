@@ -1,3 +1,4 @@
+import { markRaw } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layouts/index.vue'
 import { useAuthStore } from '@/stores/modules/auth'
@@ -29,7 +30,7 @@ console.log(allAsyncRoutes, 'allAsyncRoutes')
 export const staticRoutes = [
   {
     path: '/',
-    component: Layout,
+    component: markRaw(Layout),
   },
   {
     path: '/login',

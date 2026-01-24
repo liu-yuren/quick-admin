@@ -4,7 +4,7 @@ import { DCaret } from '@element-plus/icons-vue'
 import Sortable from 'sortablejs'
 import { computed, onMounted, toRefs, useTemplateRef } from 'vue'
 import ActionColumn from '../components/ActionColumn/index.vue'
-import { columnTypes } from '../constant'
+import { columnHandleTypes, columnTypes } from '../constant'
 import { formatEmptyValue, shouldColumnShow } from '../utils'
 
 const props = defineProps<BasicTable>()
@@ -23,6 +23,8 @@ const visibleColumns = computed(() => {
     return tableCol.value
       .map(item => ({
         ...item,
+        type: item.type ?? 'default',
+        align: item.align ?? 'center',
         show: shouldColumnShow(item.show),
       }))
       .filter(item => item.show)
@@ -64,19 +66,18 @@ defineExpose({
   >
     <template v-for="item in visibleColumns" :key="item.prop">
       <el-table-column
-        v-if="item.prop !== 'handle' && (!item.type || columnTypes.includes(item.type))"
-        :align="item.align ?? 'center'"
+        v-if="columnTypes.includes(item.type)"
         :reserve-selection="item.type === 'selection'"
         v-bind="item"
       >
         <!-- 自定义表头 -->
         <template #header>
-          <slot :name="`${item.prop}-header`" :scope="item" />
+          <slot :name="`${item.prop}_header`" :scope="item" />
         </template>
 
         <template #default="scope">
           <!-- 默认列：显示普通文本 -->
-          <template v-if="item.type === 'default' || !item.type">
+          <template v-if="item.type === 'default'">
             <div>
               <span>{{ formatEmptyValue(scope.row[item.prop || '']) }}</span>
               <span v-if="item.unit">{{ item.unit }}</span>
@@ -117,7 +118,9 @@ defineExpose({
       </el-table-column>
 
       <!-- 操作列 -->
-      <ActionColumn v-if="item.prop === 'handle'" v-bind="item" />
+      <ActionColumn v-if="columnHandleTypes.includes(item.type)" v-bind="item" />
     </template>
+
+    
   </el-table>
 </template>

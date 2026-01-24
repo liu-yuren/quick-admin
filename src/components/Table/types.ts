@@ -19,6 +19,7 @@ type TableColumnType = 'default'
   | 'image'
   | 'radio'
   | 'sort'
+  | 'handle'
 
 export type TableColumnProps = TableColumnInstance['$props'] & {
   // 属性拓展

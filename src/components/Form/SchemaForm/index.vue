@@ -7,7 +7,13 @@ import { componentMap, defaultComponentProps } from '../constant'
 const props = defineProps<{ formOptions: FormOptions }>()
 const emit = defineEmits(['submit'])
 
-const { model, schema, gutter, wrapperCol = { xs: 24 }, ...args } = toRefs(props.formOptions)
+const {
+  model,
+  schema,
+  gutter,
+  wrapperCol = { xs: 24 },
+  ...args
+} = toRefs(props.formOptions)
 
 const formRef = useTemplateRef('formRef')
 
@@ -52,16 +58,16 @@ function mergeComponentProps(item: FormSchema) {
     const props = defaultComponentProps.get(item.component) ?? {}
 
     // 特殊处理图片上传组件
-    if (item.component === 'ImgUpload') {
-      return {
-        ...props,
-        onPreview: (uploadFile: UploadFile) => {
-          img.srcList = [uploadFile.url!]
-          img.showPreview = true
-        },
-        ...item.componentProps,
-      }
-    }
+    // if (item.component === 'ImgUpload') {
+    //   return {
+    //     ...props,
+    //     onPreview: (uploadFile: UploadFile) => {
+    //       img.srcList = [uploadFile.url!]
+    //       img.showPreview = true
+    //     },
+    //     ...item.componentProps,
+    //   }
+    // }
 
     // 其他组件直接合并默认属性和自定义属性
     return { ...props, ...item.componentProps }
@@ -104,7 +110,7 @@ defineExpose({
             :rules="item.rules"
           >
             <template #label>
-              <slot :name="`${item.name}-label`" />
+              <slot :name="`${item.name}_label`" />
             </template>
 
             <slot :name="item.name" :props="item">

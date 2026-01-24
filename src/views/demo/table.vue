@@ -21,7 +21,7 @@ const tableCol: TableColumnProps[] = [
   { label: '电话', prop: 'b' },
   { label: '年龄', prop: 'c' },
   { label: '地址', prop: 'd' },
-  { label: '操作', prop: 'handle', fixed: 'right', width: 160 },
+  { type: 'handle', label: '操作', prop: 'handle', fixed: 'right', width: 160 },
 ]
 
 const tableData = ref<TableData[]>([])

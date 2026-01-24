@@ -11,7 +11,7 @@ export const columnTypes = [
   'checked',
   'default',
   'image',
-  'costom',
+  'custom',
 ]
 
 export const proTableContextKey: InjectionKey<ProTableContextKey> = Symbol('proTableContextKey')
