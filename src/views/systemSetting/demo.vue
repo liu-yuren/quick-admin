@@ -41,6 +41,10 @@ const schema = ref<FormSchemaItems[]>([
     span: 24,
     tips: 'vin逗号分隔',
     tooltip: '注意点',
+    show: (param) => {
+      console.log(param, 'params')
+      return !!param.username
+    },
   },
   {
     component: 'el-input',

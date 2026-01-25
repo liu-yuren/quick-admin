@@ -46,7 +46,7 @@ function isColVisible(item: FormSchemaItems) {
     return true
   }
   if (typeof item.show === 'function') {
-    // return item.show(model.value)
+    return item.show(formDataModel.value)
   }
   return item.show
 }
