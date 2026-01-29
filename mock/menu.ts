@@ -21,8 +21,15 @@ const data = [
   { id: 12, name: '数据字典配置', permissionCode: 'dict-config', parentId: 11 },
   { id: 13, name: '类目管理', permissionCode: 'category', parentId: 12 },
   { id: 14, name: '数据字典', permissionCode: 'dict', parentId: 12 },
-]
 
+  // 示例模块
+  { id: 16, name: '示例', permissionCode: 'example', parentId: null },
+  { id: 17, name: '表单', permissionCode: 'form', parentId: 16 },
+  { id: 18, name: '基本使用', permissionCode: 'basic-form', parentId: 16 },
+  { id: 19, name: '插槽使用', permissionCode: 'slots-form', parentId: 16 },
+  { id: 20, name: '事件使用', permissionCode: 'events-form', parentId: 16 },
+  { id: 21, name: '提示使用', permissionCode: 'tips-form', parentId: 16 },
+]
 export default {
   url: '/api/menu/list',
   method: 'post',

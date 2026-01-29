@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import type { FormOptions } from '@/components/Form'
+import type { FormSchemaProps } from '@/components/common/FormSchema/types'
 import type { TableColumnProps } from '@/components/Table/types'
 import { onMounted, reactive, ref } from 'vue'
-import { SearchForm } from '@/components/Form'
-import { BasicTable } from '@/components/Table'
+// import { SearchForm } from '@/components/Form'
+// import { BasicTable } from '@/components/Table'
+import FormSchema from '@/components/common/FormSchema/index.vue'
 
 const tableCol: TableColumnProps[] = [
   { type: 'selection', width: 55 },
@@ -46,76 +47,65 @@ const tableHeaderBtns = [
 ]
 
 const tableData = ref<any[]>([])
-const formOptions = reactive<FormOptions>({
-  showCollapse: true,
-  defaultShowCount: 3,
-  animationDuration: 300,
-  formProps: { size: 'default', labelWidth: 'auto' } as any,
-  formFields: [
-    {
-      component: 'el-input',
-      componentProps: {
-        placeholder: '请输入用户名',
-      },
-      formItemProps: {
-        label: '用户名',
-        prop: 'username',
-        rules: [{ required: true }],
-      },
-      colProps: { span: 6 },
+
+const formData = ref({})
+const schema = [
+  {
+    component: 'el-input',
+    componentProps: {
+      placeholder: '请输入用户名',
     },
-    {
-      component: 'el-input',
-      componentProps: {
-        placeholder: '请输入邮箱',
-      },
-      formItemProps: {
-        label: '邮箱',
-        prop: 'email',
-      },
-      colProps: { span: 6 },
+    label: '用户名',
+    name: 'username',
+    rules: [{ required: true }],
+    span: 6,
+  },
+  {
+    component: 'el-input',
+    componentProps: {
+      placeholder: '请输入邮箱',
     },
-    {
-      component: 'el-select',
-      componentProps: {
-        placeholder: '请选择状态',
-        clearable: true,
-      },
-      formItemProps: {
-        label: '状态',
-        prop: 'status',
-      },
-      colProps: { span: 6 },
+    label: '邮箱',
+    name: 'email',
+    span: 6,
+  },
+  {
+    component: 'el-select',
+    componentProps: {
+      placeholder: '请选择状态',
+      clearable: true,
     },
-    {
-      component: 'el-input',
-      componentProps: {
-        placeholder: '请输入手机号',
-      },
-      formItemProps: {
-        label: '手机号',
-        prop: 'phone',
-      },
-      colProps: { span: 6 },
+
+    label: '状态',
+    name: 'status',
+    span: 6,
+  },
+  {
+    component: 'el-input',
+    componentProps: {
+      placeholder: '请输入手机号',
     },
-    {
-      component: 'el-date-picker',
-      componentProps: {
-        'type': 'daterange',
-        'range-separator': '至',
-        'start-placeholder': '开始日期',
-        'end-placeholder': '结束日期',
-        'format': 'YYYY-MM-DD',
-        'value-format': 'YYYY-MM-DD',
-      },
-      formItemProps: {
-        label: '创建时间',
-        prop: 'createTime',
-      },
-      colProps: { span: 12 },
+
+    label: '手机号',
+    name: 'phone',
+
+    span: 6,
+  },
+  {
+    component: 'el-date-picker',
+    componentProps: {
+      'type': 'daterange',
+      'range-separator': '至',
+      'start-placeholder': '开始日期',
+      'end-placeholder': '结束日期',
+      'format': 'YYYY-MM-DD',
+      'value-format': 'YYYY-MM-DD',
     },
-  ],
-})
+    label: '创建时间',
+    name: 'createTime',
+    span: 12,
+  },
+]
 
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
@@ -146,15 +136,16 @@ onMounted(() => {
 
 <template>
   <div style="height: 100%;">
-    <SearchForm :form-options="formOptions" />
+    <!-- <SearchForm :class="formOptions" /> -->
+    <FormSchema v-model="formData" :schema="schema" />
 
-    <BasicTable
+    <!-- <BasicTable
       :table-col="tableCol"
       :table-props="{
         data: tableData,
       }"
       :table-header-btns="tableHeaderBtns"
-    />
+    /> -->
 
     <div class="common-table-page">
       <el-pagination

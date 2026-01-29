@@ -103,12 +103,12 @@ const activeMenu = computed(() => route.name)
   position: relative;
 
   .main-container {
-    padding: 8px 10px 0 10px;
+    // padding: 8px 10px 0 10px;
     // padding: 30px 40px;
     padding: 30px 40px;
     height: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    // overflow: hidden;
   }
 }
 </style>
