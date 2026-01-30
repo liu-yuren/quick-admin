@@ -56,7 +56,7 @@ const schema = ref([
 
     <SchemaForm
       v-model="formData"
-      label-width="120px"
+      label-width="auto"
       :schema="schema"
     />
   </div>

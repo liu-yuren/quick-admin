@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import type { FormInstance } from 'element-plus'
 import type {
   FormComponentSlotContent,
   FormSchemaEmits,
-  FormSchemaItems,
   FormSchemaProps,
+  SchemaFormItems,
   SlotsObj,
 } from './types'
 import { QuestionFilled } from '@element-plus/icons-vue'
 import { useVModel } from '@vueuse/core'
+import { unref, useTemplateRef } from 'vue'
 
 defineOptions({
   name: 'FormSchema',
@@ -25,19 +27,23 @@ const props = withDefaults(defineProps<FormSchemaProps>(), {
   // ignoreBtnLabel: true,
   // scrollToError: true,
   // autoCollapseInValidate: true,
-  // submitBtnText: '确定',
-  // cancelBtnText: '取消',
+  submitBtnText: '确定',
+  cancelBtnText: '返回',
+  showBtnArea: true,
+  showSubmitBtn: true,
+  showCancelBtn: true,
 })
 
 const emit = defineEmits<FormSchemaEmits>()
 
+const formRef = useTemplateRef<FormInstance>('formRef')
 const formData = useVModel(props, 'modelValue', emit)
 
 /**
  * 表单项是否可见
  * @param item 单个表单项配置
  */
-function isColVisible(item: FormSchemaItems) {
+function isColVisible(item: SchemaFormItems) {
   if (typeof item.show === 'undefined') {
     return true
   }
@@ -52,7 +58,7 @@ function isColVisible(item: FormSchemaItems) {
  * 处理 componentSlots 为函数/对象的场景，转换插槽数组
  * @param item 单个表单项配置
  */
-function resolveSlots(item: FormSchemaItems) {
+function resolveSlots(item: SchemaFormItems) {
   // 处理插槽配置
   const slotsObj: SlotsObj = typeof item.componentSlots === 'function'
     ? item.componentSlots()
@@ -74,15 +80,26 @@ function renderSlotContent(slotContent: FormComponentSlotContent, slotScope: any
   return typeof slotContent === 'function' ? slotContent(slotScope) : slotContent
 }
 
-function submit() {
+async function submit() {
+  try {
+    await formRef.value?.validate()
+    emit('submit', unref(formData))
+  }
+  catch (error) {
+    emit('submitError', error)
+  }
+}
 
+function cancel() {
+  emit('cancel')
 }
 </script>
 
 <template>
   <el-form
-    v-bind="$attrs"
+    ref="formRef"
     :model="formData "
+    v-bind="$attrs"
     @submit.prevent="submit"
   >
     <el-row :gutter="gutter">
@@ -166,6 +183,21 @@ function submit() {
     </el-row>
 
     <slot name="btnArea" />
+
+    <!-- button area -->
+    <div v-if="showBtnArea">
+      <el-button
+        v-if="showSubmitBtn"
+        type="primary"
+        @click="submit"
+      >
+        {{ submitBtnText }}
+      </el-button>
+
+      <el-button v-if="showCancelBtn" @click="cancel">
+        {{ cancelBtnText }}
+      </el-button>
+    </div>
   </el-form>
 </template>
 

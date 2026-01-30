@@ -10,7 +10,7 @@ const schema = ref([
   {
     component: 'el-input',
     name: 'name',
-    label: '活动名称',
+    label: '名称',
     span: 24,
   },
   {
@@ -107,7 +107,7 @@ const schema = ref([
 
     <SchemaForm
       v-model="formData"
-      label-width="120px"
+      label-width="auto"
       :schema="schema"
     />
   </div>

@@ -34,7 +34,7 @@ export const demoRoutes = [
             name: 'slots-form',
             component: () => import('@/views/demo/form/soltsForm.vue'),
             meta: {
-              title: '插槽使用',
+              title: '组件内插槽使用',
               permissionCode: 'slots-form',
               icon: 'menu',
             },

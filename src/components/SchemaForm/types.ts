@@ -12,27 +12,36 @@ export interface SlotsObj {
   [key: string]: FormComponentSlotContent
 }
 
-export interface FormSchemaProps extends Partial<FormProps> {
+export interface FormSchemaProps {
   /** 绑定表单数据-用于数据同步 */
   modelValue: Recordable
   /** 表单项配置内容 */
-  schema: FormSchemaItems[]
+  schema: SchemaFormItems[]
   /** 表单栅格列间距 */
   gutter?: number
   /** 表单栅格列数 */
   wrapperCol?: Partial<ColProps>
   /** 表单提交远程请求方法 */
   request?: (model: Recordable) => Promise<any>
+
+  /** 表单提交按钮 */
+  submitBtnText?: string
+  /** 表单取消按钮 */
+  cancelBtnText?: string
+  showBtnArea?: boolean
+  showSubmitBtn?: boolean
+  showCancelBtn?: boolean
 }
 
 export interface FormSchemaEmits {
   (e: 'update:model', model: MaybeRef<Recordable>): void
   (e: 'submit', model?: Record<string, any>): void
+  (e: 'submitError', error: any): void
   (e: 'cancel'): void
   (e: 'success' | 'error', res: unknown): void
 }
 
-export interface FormSchemaItems {
+export interface SchemaFormItems {
   // === 布局相关配置 ===
   span?: number // 栅格占位格数 (24栅格系统)
   colProps?: Partial<ColProps> // el-col 组件属性
