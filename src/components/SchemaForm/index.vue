@@ -177,12 +177,16 @@ function cancel() {
             >
               {{ item.tips }}
             </div>
+
+
           </el-form-item>
         </el-col>
       </template>
+
+      <slot name="custom-col"></slot>
     </el-row>
 
-    <slot name="btnArea" />
+    <slot name="custom" />
 
     <!-- button area -->
     <div v-if="showBtnArea">

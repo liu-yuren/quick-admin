@@ -1,13 +1,13 @@
-<script setup lang="tsx">
-import type { FormSchemaItems } from '@/components/common/FormSchema/types'
+<script setup lang="ts">
+// import type { FormSchemaItems } from '@/components/common/FormSchema/types'
 import { Plus, Search } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
 import { h, ref } from 'vue'
-import FormSchema from '@/components/common/FormSchema/index.vue'
+// import FormSchema from '@/components/common/FormSchema/index.vue'
 
 const formData = ref({})
 
-const schema = ref<FormSchemaItems[]>([
+const schema = ref([
   {
     component: 'el-input',
     componentEvents: {
@@ -61,14 +61,14 @@ const schema = ref<FormSchemaItems[]>([
   <div class="demo" style="height: 100%;">
     {{ formData }}
     <hr>
-    <FormSchema
+    <!-- <FormSchema
       v-model="formData"
       :schema="schema"
       label-width="auto"
     >
-      <!-- <template #username>
+      <template #username>
         <el-input />
-      </template> -->
-    </FormSchema>
+      </template>
+    </FormSchema> -->
   </div>
 </template>

@@ -59,6 +59,16 @@ export const demoRoutes = [
               icon: 'menu',
             },
           },
+          {
+            path: 'search-form',
+            name: 'search-form',
+            component: () => import('@/views/demo/searchForm.vue'),
+            meta: {
+              title: '搜索表单',
+              permissionCode: 'search-form',
+              icon: 'menu',
+            },
+          },
         ],
       },
     ],
