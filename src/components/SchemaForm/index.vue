@@ -17,16 +17,8 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<FormSchemaProps>(), {
-  // cols: 1,
+  modelValue: () => ({}),
   gutter: 16,
-  // size: 'default',
-  // disabled: false,
-
-  // editable: true,
-  // emptyText: '-',
-  // ignoreBtnLabel: true,
-  // scrollToError: true,
-  // autoCollapseInValidate: true,
   submitBtnText: '确定',
   cancelBtnText: '返回',
   showBtnArea: true,
@@ -37,6 +29,7 @@ const props = withDefaults(defineProps<FormSchemaProps>(), {
 const emit = defineEmits<FormSchemaEmits>()
 
 const formRef = useTemplateRef<FormInstance>('formRef')
+
 const formData = useVModel(props, 'modelValue', emit)
 
 /**
@@ -93,6 +86,8 @@ async function submit() {
 function cancel() {
   emit('cancel')
 }
+
+defineExpose({})
 </script>
 
 <template>
@@ -147,7 +142,7 @@ function cancel() {
             <slot :name="item.name" v-bind="item">
               <component
                 :is="item.component"
-                v-model="formData[item.name]"
+                v-model="formData[item.name!]"
                 :class="[item.componentClass || '']"
                 v-bind="item.componentProps"
                 v-on="item.componentEvents || {}"
@@ -177,13 +172,11 @@ function cancel() {
             >
               {{ item.tips }}
             </div>
-
-
           </el-form-item>
         </el-col>
       </template>
 
-      <slot name="custom-col"></slot>
+      <slot name="custom-col" />
     </el-row>
 
     <slot name="custom" />

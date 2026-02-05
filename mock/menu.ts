@@ -29,9 +29,11 @@ const data = [
   { id: 19, name: '插槽使用', permissionCode: 'slots-form', parentId: 16 },
   { id: 20, name: '事件使用', permissionCode: 'events-form', parentId: 16 },
   { id: 21, name: '提示使用', permissionCode: 'tips-form', parentId: 16 },
-
-  // 搜索表单
+  { id: 23, name: '提示使用', permissionCode: 'use-form', parentId: 16 },
   { id: 22, name: '搜索表单', permissionCode: 'search-form', parentId: 16 },
+
+  { id: 24, name: '表格', permissionCode: 'table', parentId: 16 },
+  { id: 25, name: '基本表格', permissionCode: 'basic-table', parentId: 16 },
 ]
 export default {
   url: '/api/menu/list',

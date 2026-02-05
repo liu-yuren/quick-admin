@@ -14,9 +14,9 @@ export interface SlotsObj {
 
 export interface FormSchemaProps {
   /** 绑定表单数据-用于数据同步 */
-  modelValue: Recordable
+  modelValue?: Recordable
   /** 表单项配置内容 */
-  schema: SchemaFormItems[]
+  schema?: SchemaFormItems[]
   /** 表单栅格列间距 */
   gutter?: number
   /** 表单栅格列数 */
@@ -34,7 +34,7 @@ export interface FormSchemaProps {
 }
 
 export interface FormSchemaEmits {
-  (e: 'update:model', model: MaybeRef<Recordable>): void
+  (e: 'update:modelValue', model: MaybeRef<Recordable>): void
   (e: 'submit', model?: Record<string, any>): void
   (e: 'submitError', error: any): void
   (e: 'cancel'): void
@@ -54,7 +54,7 @@ export interface SchemaFormItems {
   componentEvents?: Record<string, (params: any) => any> // 组件事件 示例：{ change: (value) => console.log(value) }
 
   // === form-item 相关配置 ===
-  name: string // 表单字段名称
+  name?: string // 表单字段名称
   label?: string | VNode | (() => VNode) // 表单字段标签名
   labelWidth?: string | number // 表单字段标签名宽度，默认继承el-form配置
   labelPosition?: string // 表单字段标签名位置，默认继承el-form配置

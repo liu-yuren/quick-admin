@@ -69,6 +69,37 @@ export const demoRoutes = [
               icon: 'menu',
             },
           },
+          {
+            path: 'use-form',
+            name: 'use-form',
+            component: () => import('@/views/demo/form/useForm.vue'),
+            meta: {
+              title: 'useForm 使用',
+              permissionCode: 'useForm',
+              icon: 'menu',
+            },
+          },
+        ],
+      },
+      {
+        path: 'table',
+        name: 'table',
+        meta: {
+          title: '表单',
+          permissionCode: 'table',
+          icon: 'menu',
+        },
+        children: [
+          {
+            path: 'basic-table',
+            name: 'basic-table',
+            component: () => import('@/views/demo/table/index.vue'),
+            meta: {
+              title: '基本使用',
+              permissionCode: 'basic-table',
+              icon: 'menu',
+            },
+          },
         ],
       },
     ],
