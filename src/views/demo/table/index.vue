@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import type { TableColumnProps } from '@/components/ProTable/types'
 import { onMounted, ref } from 'vue'
 import ProTable from '@/components/ProTable/index.vue'
 
-const tableCol = [
-  { prop: 'date', label: 'Date', align: 'center' },
-  { prop: 'name', label: 'Name', align: 'center' },
-  { prop: 'address', label: 'Address', align: 'center' },
-  { type: 'handle', prop: 'action', label: 'Action', align: 'center', width: 160 },
+const tableCol: TableColumnProps[] = [
+  { prop: 'date', label: '日期', align: 'center' },
+  { prop: 'name', label: '姓名', align: 'center' },
+  { prop: 'address', label: '地址', align: 'center' },
+  { type: 'handle', prop: 'handle', label: '操作', align: 'center', width: 220 },
 ]
 
 const data = [
@@ -32,43 +33,25 @@ const data = [
   },
 ]
 
-const tableData = ref([])
+const tableData = ref<any[]>([])
 
 onMounted(() => {
   tableData.value = data.map((item) => {
-    const obj = { ...item }
-    obj.actionBtns = [
-      {
-        key: 'view',
-        label: '查看',
-        permission: true,
-      },
-      {
-        key: 'edit',
-        label: '编辑',
-        permission: true,
-      },
-      {
-        key: 'view',
-        label: '启用',
-        permission: true,
-      },
-      {
-        key: 'edit',
-        label: '停用',
-        permission: true,
-      },
-      {
-        key: 'edit',
-        label: '静默',
-        permission: true,
-      },
-    ]
-
-    return obj
+    return {
+      ...item,
+      tableHandleBtnList: [
+        { key: 'view', label: '查看', permission: true },
+        { key: 'edit', label: '编辑', permission: true },
+        { key: 'view', label: '启用', permission: true },
+        { key: 'edit', label: '停用', permission: true },
+        { key: 'edit', label: '静默', permission: true },
+      ],
+    }
   })
 
-  console.log(tableData.value, 'tableData===')
+  // tableData.value.forEach((item) => {
+  //   console.log(item.tableHandleBtnList)
+  // })
 })
 </script>
 

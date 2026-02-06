@@ -30,29 +30,39 @@ function isActive(item: any) {
       :class="[isActive(item) && 'active']"
       @click="router.push({ path: item.path })"
     >
-      <div class="tabs-view-wrapper">
-        <span>{{ item.title }}</span>
+      <!-- <div class="tabs-view-wrapper"> -->
+      <span>{{ item.title }}</span>
 
-        <el-icon class="close" color="#18181bcc">
-          <Close />
-        </el-icon>
-      </div>
+      <el-icon class="close" color="#18181bcc">
+        <Close />
+      </el-icon>
+      <!-- </div> -->
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .tabs-view-container {
+  width: 100%;
+  height: 34px;
   display: flex;
+  border-bottom: 1px solid #d8dce5;
+  // padding: 2px 0;
+  padding-left: 15px;
+  box-sizing: border-box;
+  background-color: #fff;
 
   .tabs-view-list {
+    display: inline-block;
+    height: 26px;
     position: relative;
     background-color: hsl(240 5% 96%);
     border-radius: calc(0.5rem - 2px);
     font-size: 14px;
     cursor: pointer;
-    margin-bottom: 2px;
+    // margin-bottom: 2px;
     display: flex;
+    align-items: center;
 
     & + .tabs-view-list {
       margin-left: 4px;
@@ -83,7 +93,8 @@ function isActive(item: any) {
     background: #ffbf13;
     border-color: #ffbf13;
     color: #324157;
-    border-radius: calc(0.5rem - 2px) calc(0.5rem - 2px) 0 0;
+    border-radius: calc(0.5rem - 2px);
+    // border-radius: calc(0.5rem - 2px) calc(0.5rem - 2px) 0 0;
     margin-bottom: 0px;
 
     &:hover,
@@ -92,32 +103,32 @@ function isActive(item: any) {
       background: #ffcc42;
     }
 
-    &::before {
-      content: '';
-      width: 10px;
-      height: 10px;
-      position: absolute;
-      left: -10px;
-      bottom: 0;
-      background: radial-gradient(circle at 0 0, transparent 10px, #ffbf13 11px);
-    }
+    // &::before {
+    //   content: '';
+    //   width: 10px;
+    //   height: 10px;
+    //   position: absolute;
+    //   left: -10px;
+    //   bottom: 0;
+    //   background: radial-gradient(circle at 0 0, transparent 10px, #ffbf13 11px);
+    // }
 
-    &::after {
-      content: '';
-      width: 10px;
-      height: 10px;
-      position: absolute;
-      right: -10px;
-      bottom: 0;
-      background: radial-gradient(circle at 100% 0, transparent 10px, #ffbf13 11px);
-    }
+    // &::after {
+    //   content: '';
+    //   width: 10px;
+    //   height: 10px;
+    //   position: absolute;
+    //   right: -10px;
+    //   bottom: 0;
+    //   background: radial-gradient(circle at 100% 0, transparent 10px, #ffbf13 11px);
+    // }
   }
 
-  .tabs-view-wrapper {
-    padding: 6px 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  // .tabs-view-wrapper {
+  //   padding: 6px 10px;
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 6px;
+  // }
 }
 </style>

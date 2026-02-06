@@ -42,7 +42,7 @@ const activeMenu = computed(() => route.name)
         <NavBar />
       </el-header>
 
-      <TagsView class="tags-view-box" />
+      <TagsView />
       <Breadcrumb class="breadcrumb-box" />
 
       <el-main>
@@ -62,15 +62,6 @@ const activeMenu = computed(() => route.name)
   align-items: center;
   padding: 0 15px;
   border-bottom: 1px solid #d8dce5;
-  box-sizing: border-box;
-  background-color: #fff;
-}
-
-.tags-view-box {
-  width: 100%;
-  border-bottom: 1px solid #d8dce5;
-  padding-top: 2px;
-  padding-left: 15px;
   box-sizing: border-box;
   background-color: #fff;
 }

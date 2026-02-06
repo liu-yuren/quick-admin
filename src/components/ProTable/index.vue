@@ -1,14 +1,19 @@
 <script setup lang="tsx">
-import type { BasicTable, TableColumnShow, TableToolBarBtns } from './types'
+import type {
+  ProTableEmits,
+  ProTableProps,
+  TableColumnShow,
+  TableHandleBtnClickParams,
+  TableHandleBtnProps,
+} from './types'
 import { CaretBottom, DCaret } from '@element-plus/icons-vue'
 import Sortable from 'sortablejs'
-import { computed, onMounted, toRefs, useTemplateRef } from 'vue'
+import { computed, onMounted, useTemplateRef } from 'vue'
 
-// const props =  defineProps<BasicTable>()
-const props = withDefaults(defineProps<BasicTable>(), {
-  maxTableHandleBtnNum: 4,
+const props = withDefaults(defineProps<ProTableProps>(), {
+  maxTableHandleBtnCount: 4,
 })
-const emit = defineEmits(['dragSort', 'tableHandleClick'])
+const emit = defineEmits<ProTableEmits>()
 
 const columnTypes = [
   'selection',
@@ -21,8 +26,6 @@ const columnTypes = [
   'image',
   'custom',
 ]
-
-const { tableCol, tableData, tableProps } = toRefs(props)
 
 const tableRef = useTemplateRef('tableRef')
 
@@ -55,8 +58,8 @@ function shouldColumnShow(show: TableColumnShow | undefined) {
  * @returns {Array} 过滤后的列配置
  */
 const visibleColumns = computed(() => {
-  if (tableCol.value?.length) {
-    return tableCol.value
+  if (props.tableCol?.length) {
+    return props.tableCol
       .map(item => ({
         ...item,
         type: item.type ?? 'default',
@@ -79,9 +82,9 @@ function dragSort() {
   Sortable.create(tbody, {
     handle: '.drag-sort',
     animation: 300,
-    onEnd(params) {
-      const { newIndex, oldIndex } = params
-      emit('dragSort', { newIndex, oldIndex })
+    onEnd({ newIndex, oldIndex }) {
+      const params = { newIndex, oldIndex }
+      emit('dragSort', params)
     },
   })
 }
@@ -91,15 +94,15 @@ function dragSort() {
  * @param {TableToolBarBtns[]} btns 操作按钮集合
  * @returns {TableToolBarBtns[]} 过滤后的权限按钮集合
  */
-function filterPermissionBtn(btns: TableToolBarBtns[] = []) {
-  return btns?.filter(item => item.permission)
+function filterPermissionBtn(btnList: TableHandleBtnProps[] = []) {
+  return btnList?.filter(item => item.permission)
 }
 
 /**
- * 表格操作列---按钮点击事件
+ * 表格操作按钮点击事件
  * @param {HandleTableActionParams} params 按钮点击参数
  */
-function tableHandleClick({ scope, key, label }: any) {
+function tableHandleClick({ scope, key, label }: TableHandleBtnClickParams) {
   // 关闭当前行的 popover（$index如果存在代表有 popover）
   if (scope.$index !== undefined) {
     const popover = popoverRefs.get(scope.$index)
@@ -108,10 +111,6 @@ function tableHandleClick({ scope, key, label }: any) {
 
   emit('tableHandleClick', { scope, key, label })
 }
-
-defineExpose({
-  tableRef,
-})
 </script>
 
 <template>
@@ -122,7 +121,11 @@ defineExpose({
     border
     stripe
     :data="tableData"
-    v-bind="tableProps"
+    :header-row-style="{
+      'font-weight': '500',
+      'color': '#676767',
+    }"
+    v-bind="$attrs"
   >
     <template v-for="item in visibleColumns" :key="item.prop">
       <el-table-column
@@ -180,9 +183,9 @@ defineExpose({
       <!-- 操作列 -->
       <el-table-column v-if="item.type === 'handle'" v-bind="item">
         <template #default="scope">
-          <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.actionBtns)">
+          <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.tableHandleBtnList)">
             <el-button
-              v-if="btnIndex < maxTableHandleBtnNum"
+              v-if="btnIndex < maxTableHandleBtnCount"
               :key="btn.key"
               link
               type="primary"
@@ -207,9 +210,9 @@ defineExpose({
               'min-width': '100px',
             }"
           >
-            <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.actionBtns)">
+            <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.tableHandleBtnList)">
               <p
-                v-if="btnIndex >= maxTableHandleBtnNum"
+                v-if="btnIndex >= maxTableHandleBtnCount"
                 :key="btn.key"
               >
                 <el-button

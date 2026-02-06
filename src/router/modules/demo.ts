@@ -85,7 +85,7 @@ export const demoRoutes = [
         path: 'table',
         name: 'table',
         meta: {
-          title: '表单',
+          title: '表格',
           permissionCode: 'table',
           icon: 'menu',
         },
