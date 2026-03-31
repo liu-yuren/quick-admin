@@ -1,6 +1,7 @@
 import * as Icons from '@element-plus/icons-vue'
 
 import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -21,6 +22,8 @@ Object.keys(Icons).forEach((key) => {
 
 app.use(store)
 app.use(router)
-app.use(ElementPlus)
+app.use(ElementPlus, {
+  locale: zhCn,
+})
 
 app.mount('#app')

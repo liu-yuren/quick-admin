@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormOptions } from '../types'
+import { ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 import { useCssVar, useResizeObserver } from '@vueuse/core'
 import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import SchemaForm from '../SchemaForm/index.vue'
@@ -22,7 +23,7 @@ const componentHeight = computed(() => {
     default: useCssVar('--el-component-size', null).value ?? '',
     small: useCssVar('--el-component-size-small', null).value ?? '',
   }
-  return map[props.formOptions.size ?? 'default']
+  return map[props.formOptions?.size ?? 'default']
 })
 
 // 动态计算表单高度（折叠时为最大高度，展开时为组件高度）
@@ -46,7 +47,7 @@ onMounted(() => {
     const entry = entries[0]
     const { height } = entry.contentRect
 
-    // 减去表单项的底部外边距（margin-bottom: 18px）
+    // 搜索表单 无需考虑必填项的星号占位，因此直接减去表单项的底部外边距（margin-bottom: 18px）即可
     formMaxHeight.value = `${height - 18}px`
   })
 })
@@ -81,27 +82,34 @@ function reset() {
           transition: 'height 0.3s',
           flex: 1,
         }"
+        v-bind="$attrs"
       />
 
       <div class="search-form-btns">
         <el-button type="primary" @click="search">
           搜索
         </el-button>
+
         <el-button @click="reset">
           重置
         </el-button>
+
+        <el-button
+          v-if="shouldShowDivider"
+          style="width: 32px;"
+          plain
+          @click="isFormCollapsed = !isFormCollapsed"
+        >
+          <el-icon v-if="isFormCollapsed">
+            <ArrowDown />
+          </el-icon>
+
+          <el-icon v-else>
+            <ArrowUp />
+          </el-icon>
+        </el-button>
       </div>
     </div>
-
-    <el-divider v-if="shouldShowDivider" content-position="right">
-      <el-button
-        type="primary"
-        link
-        @click="isFormCollapsed = !isFormCollapsed"
-      >
-        {{ isFormCollapsed ? '展开' : '收起' }}
-      </el-button>
-    </el-divider>
   </div>
 </template>
 

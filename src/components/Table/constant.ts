@@ -5,11 +5,11 @@ export const columnHandleTypes = ['handle']
 export const columnTypes = [
   'selection',
   'radio',
-  'index',
+  // 'index',
   'expand',
-  'sort',
+  // 'sort',
   'checked',
-  'default',
+  // 'default',
   'image',
   'custom',
 ]

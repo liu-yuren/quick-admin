@@ -1,6 +1,60 @@
 import type { FormOptions } from '@/components/Form'
 import type { TableColumnProps, TableToolBarBtns } from '@/components/Table/types'
 
+export const searchFormSchema = [
+  {
+    component: 'Input',
+    componentProps: {
+      placeholder: '请输入用户名',
+    },
+    label: '用户名',
+    name: 'username',
+    span: 8,
+  },
+  {
+    component: 'Input',
+    componentProps: {
+      placeholder: '请输入邮箱',
+    },
+    label: '邮箱',
+    name: 'email',
+    span: 8,
+  },
+  {
+    component: 'Select',
+    componentProps: {
+      placeholder: '请选择状态',
+      clearable: true,
+    },
+    label: '状态',
+    name: 'status',
+    span: 8,
+  },
+  {
+    component: 'Input',
+    componentProps: {
+      placeholder: '请输入手机号',
+    },
+    label: '手机号',
+    name: 'phone',
+    span: 8,
+  },
+  {
+    component: 'DatePicker',
+    componentProps: {
+      'type': 'daterange',
+      'range-separator': '至',
+      'start-placeholder': '开始日期',
+      'end-placeholder': '结束日期',
+      'format': 'YYYY-MM-DD',
+      'value-format': 'YYYY-MM-DD',
+    },
+    label: '创建时间',
+    name: 'createTime',
+    span: 8,
+  },
+]
+
 export const formOptions: FormOptions = {
   showCollapse: true,
   defaultShowCount: 3,
@@ -8,50 +62,50 @@ export const formOptions: FormOptions = {
   formProps: { size: 'default', labelWidth: 'auto' } as any,
   formFields: [
     {
-      component: 'el-input',
+      component: 'Input',
       componentProps: {
         placeholder: '请输入用户名',
       },
       formItemProps: {
         label: '用户名',
-        prop: 'username',
+        name: 'username',
         rules: [{ required: true }],
       },
-      colProps: { span: 6 },
+      colProps: { span: 8 },
     },
     {
-      component: 'el-input',
+      component: 'Input',
       componentProps: {
         placeholder: '请输入邮箱',
       },
       formItemProps: {
         label: '邮箱',
-        prop: 'email',
+        name: 'email',
       },
-      colProps: { span: 6 },
+      colProps: { span: 8 },
     },
     {
-      component: 'el-select',
+      component: 'Select',
       componentProps: {
         placeholder: '请选择状态',
         clearable: true,
       },
       formItemProps: {
         label: '状态',
-        prop: 'status',
+        name: 'status',
       },
-      colProps: { span: 6 },
+      colProps: { span: 8 },
     },
     {
-      component: 'el-input',
+      component: 'Input',
       componentProps: {
         placeholder: '请输入手机号',
       },
       formItemProps: {
         label: '手机号',
-        prop: 'phone',
+        name: 'phone',
       },
-      colProps: { span: 6 },
+      colProps: { span: 8 },
     },
     {
       component: 'el-date-picker',
@@ -65,7 +119,7 @@ export const formOptions: FormOptions = {
       },
       formItemProps: {
         label: '创建时间',
-        prop: 'createTime',
+        name: 'createTime',
       },
       colProps: { span: 12 },
     },
@@ -86,10 +140,10 @@ export const tableCol: TableColumnProps[] = [
   { type: 'default', width: 55 },
   { type: 'index', label: '序号', width: 55 },
   { type: 'sort', label: '排序', width: 65 },
-  { label: '姓名', prop: 'a' },
-  { label: '电话', prop: 'b' },
-  { label: '年龄', prop: 'c' },
-  { label: '地址', prop: 'd' },
-  { label: '图片', prop: 'imgUrl', isImage: true },
-  { label: '操作', prop: 'handle', fixed: 'right', width: 160 },
+  { label: '姓名', name: 'a' },
+  { label: '电话', name: 'b' },
+  { label: '年龄', name: 'c' },
+  { label: '地址', name: 'd' },
+  { label: '图片', name: 'imgUrl', isImage: true },
+  { label: '操作', name: 'handle', fixed: 'right', width: 160 },
 ]

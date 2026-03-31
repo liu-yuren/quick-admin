@@ -1,11 +1,26 @@
 <script lang="ts" setup>
 import type { HandleTableActionParams } from '@/components/Table/types'
-import { onMounted, ref } from 'vue'
-import { ProTable } from '@/components/Table'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import SearchForm from '@/components/Form/SearchForm/index.vue'
+import ProTable from '@/components/ProTable/index.vue'
 import router from '@/router'
-import { formOptions, tableCol, tableHeaderBtns } from './index'
+import { searchFormSchema, tableCol, tableHeaderBtns } from './index'
 
 const tableData = ref<any[]>([])
+
+const formOptions = reactive({
+  model: {},
+  gutter: 20,
+  schema: searchFormSchema,
+})
+
+const pageSizes = [10, 20, 50]
+const page = reactive({
+  pageIndex: 1,
+  pageSize: 10,
+  total: 20,
+})
+const { pageIndex, pageSize, total } = toRefs(page)
 
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
@@ -35,7 +50,7 @@ onMounted(() => {
 })
 
 function handleTableAction(scope: HandleTableActionParams) {
-  console.log(scope, 'handleTableAction')
+  // console.log(scope, 'handleTableAction')
 
   const { key } = scope
   switch (key) {
@@ -53,34 +68,53 @@ function reset() {
   // 重置逻辑
 }
 
-function handleSelectionChange(val) {
+function handleSelectionChange(_val: any) {
   // 选中逻辑
-  console.log(val, 'val==')
+  // console.log(val, 'val==')
 }
 
-function dragSort(params) {
-  console.log(params, 'params');
-  
+function dragSort(_params: any) {
+  // console.log(params, 'params')
+}
+
+function handleSizeChange(_val: number) {
+
+}
+function handleCurrentChange(_val: number) {
+
 }
 </script>
 
 <template>
-  <div class="user-manage-container">
-    <ProTable
-      v-if="$route.name === 'UserManage'"
+  <div class="common-page-list user-manage-container">
+    <SearchForm
+      label-width="80px"
       :form-options="formOptions"
-      :table-props="{
-        data: tableData,
-        rowKey: 'id',
-        onSelectionChange: handleSelectionChange,
-      }"
-      :table-col="tableCol"
-      :table-header-btns="tableHeaderBtns"
       @search="search"
       @reset="reset"
-      @handle-table-action="handleTableAction"
+    />
+
+    <ProTable
+      :table-col="tableCol"
+      :table-data="tableData"
+      :header-btns="tableHeaderBtns"
+      @table-action="handleTableAction"
+      @selection-change="handleSelectionChange"
       @drag-sort="dragSort"
     />
+
+    <div v-if="total > pageSize" class="common-table-page">
+      <el-pagination
+        :current-page="pageIndex"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
 
     <!-- 子路由渲染区域 -->
     <router-view />

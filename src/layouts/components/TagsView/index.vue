@@ -46,23 +46,23 @@ function isActive(item: any) {
   width: 100%;
   height: 34px;
   display: flex;
+  align-items: center;
+  gap: 4px;
   border-bottom: 1px solid #d8dce5;
-  // padding: 2px 0;
-  padding-left: 15px;
+  padding-left: 10px;
   box-sizing: border-box;
   background-color: #fff;
 
   .tabs-view-list {
-    display: inline-block;
     height: 26px;
     position: relative;
     background-color: hsl(240 5% 96%);
     border-radius: calc(0.5rem - 2px);
     font-size: 14px;
     cursor: pointer;
-    // margin-bottom: 2px;
     display: flex;
     align-items: center;
+    padding: 0 8px;
 
     & + .tabs-view-list {
       margin-left: 4px;

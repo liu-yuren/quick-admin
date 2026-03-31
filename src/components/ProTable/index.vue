@@ -9,6 +9,8 @@ import type {
 import { CaretBottom, DCaret } from '@element-plus/icons-vue'
 import Sortable from 'sortablejs'
 import { computed, onMounted, useTemplateRef } from 'vue'
+import ToolBarLeft from './ToolBar/ToolBarLeft/index.vue'
+import ToolBarRight from './ToolBar/ToolBarRight/index.vue'
 
 const props = withDefaults(defineProps<ProTableProps>(), {
   maxTableHandleBtnCount: 4,
@@ -115,137 +117,164 @@ function tableHandleClick({ scope, key, label }: TableHandleBtnClickParams) {
 
 <template>
   <!-- :max-height="tableMaxHeight" -->
-  <el-table
-    ref="tableRef"
-    class="pro-table"
-    border
-    stripe
-    :data="tableData"
-    :header-row-style="{
-      'font-weight': '500',
-      'color': '#676767',
-    }"
-    v-bind="$attrs"
-  >
-    <template v-for="item in visibleColumns" :key="item.prop">
-      <el-table-column
-        v-if="columnTypes.includes(item.type)"
-        :reserve-selection="item.type === 'selection'"
-        v-bind="item"
+  <div class="pro-table">
+    <div class="table-tool-bar">
+      <el-button
+        type="primary"
       >
-        <!-- 自定义表头 -->
-        <template #header>
-          <slot :name="`${item.prop}_header`" :scope="item" />
-        </template>
+        新增
+      </el-button>
+      <ToolBarLeft />
+      <ToolBarRight v-model:table-col="visibleColumns" />
+    </div>
 
-        <template #default="scope">
-          <!-- 默认列：显示普通文本 -->
-          <template v-if="item.type === 'default'">
-            <div>
-              <span>{{ formatEmptyValue(scope.row[item.prop || '']) }}</span>
-              <span v-if="item.unit">{{ item.unit }}</span>
-            </div>
+    <el-table
+      ref="tableRef"
+      row-key="id"
+      border
+      stripe
+      :data="tableData"
+      :header-row-style="{
+        'font-weight': '500',
+        'color': '#676767',
+      }"
+      v-bind="$attrs"
+    >
+      <template v-for="item in visibleColumns" :key="item.prop">
+        <el-table-column
+          v-if="columnTypes.includes(item.type)"
+          :reserve-selection="item.type === 'selection'"
+          v-bind="item"
+        >
+          <!-- 自定义表头 -->
+          <template #header>
+            <slot :name="`${item.prop}_header`" :scope="item" />
           </template>
 
-          <!-- 可展开列 -->
-          <template v-if="item.type === 'expand'">
-            <component :is="item.render" v-if="item.render" :scope="scope" />
-            <slot v-else :name="item.type" :scope="scope" />
-          </template>
-
-          <!-- 拖拽排序列 -->
-          <template v-if="item.type === 'sort'">
-            <el-tag class="drag-sort" style="cursor: move">
-              <el-icon style="cursor: move">
-                <DCaret />
-              </el-icon>
-            </el-tag>
-          </template>
-
-          <!-- 图片列 -->
-          <template v-if="item.type === 'image'">
-            <el-image
-              :src="scope.row[item.prop]"
-              preview-teleported
-              :preview-src-list="[scope.row[item.prop]]"
-              fit="cover"
-              :style="item.imageStyles"
-            />
-          </template>
-
-          <!-- 自定义列 -->
-          <template v-if="item.type === 'custom'">
-            <slot :name="item.prop" :scope="scope" />
-          </template>
-        </template>
-      </el-table-column>
-
-      <!-- 操作列 -->
-      <el-table-column v-if="item.type === 'handle'" v-bind="item">
-        <template #default="scope">
-          <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.tableHandleBtnList)">
-            <el-button
-              v-if="btnIndex < maxTableHandleBtnCount"
-              :key="btn.key"
-              link
-              type="primary"
-              size="small"
-              v-bind="btn.btnProps"
-              @click.stop="tableHandleClick({
-                scope,
-                label: btn.label,
-                key: btn.key,
-              })"
-            >
-              {{ btn.label }}
-            </el-button>
-          </template>
-
-          <el-popover
-            :ref="(el: any) => el && popoverRefs.set(scope.$index, el)"
-            placement="bottom-end"
-            trigger="click"
-            :popper-style="{
-              'width': '100px',
-              'min-width': '100px',
-            }"
-          >
-            <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.tableHandleBtnList)">
-              <p
-                v-if="btnIndex >= maxTableHandleBtnCount"
-                :key="btn.key"
-              >
-                <el-button
-                  link
-                  type="primary"
-                  size="small"
-                  v-bind="btn.btnProps"
-                  @click.stop="tableHandleClick({
-                    scope,
-                    label: btn.label,
-                    key: btn.key,
-                  })"
-                >
-                  {{ btn.label }}
-                </el-button>
-              </p>
+          <template #default="scope">
+            <!-- 默认列：显示普通文本 -->
+            <template v-if="item.type === 'default'">
+              <div>
+                <span>{{ formatEmptyValue(scope.row[item.prop || '']) }}</span>
+                <span v-if="item.unit">{{ item.unit }}</span>
+              </div>
             </template>
 
-            <template #reference>
-              <el-icon
-                color="#409eff"
-                style="
+            <!-- 可展开列 -->
+            <template v-if="item.type === 'expand'">
+              <component :is="item.render" v-if="item.render" :scope="scope" />
+              <slot v-else :name="item.type" :scope="scope" />
+            </template>
+
+            <!-- 拖拽排序列 -->
+            <template v-if="item.type === 'sort'">
+              <el-tag class="drag-sort" style="cursor: move">
+                <el-icon style="cursor: move">
+                  <DCaret />
+                </el-icon>
+              </el-tag>
+            </template>
+
+            <!-- 图片列 -->
+            <template v-if="item.type === 'image'">
+              <el-image
+                :src="scope.row[item.prop]"
+                preview-teleported
+                :preview-src-list="[scope.row[item.prop]]"
+                fit="cover"
+                :style="item.imageStyles"
+              />
+            </template>
+
+            <!-- 自定义列 -->
+            <template v-if="item.type === 'custom'">
+              <slot :name="item.prop" :scope="scope" />
+            </template>
+          </template>
+        </el-table-column>
+
+        <!-- 操作列 -->
+        <el-table-column v-if="item.type === 'handle'" v-bind="item">
+          <template #default="scope">
+            <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.tableHandleBtnList)">
+              <el-button
+                v-if="btnIndex < maxTableHandleBtnCount"
+                :key="btn.key"
+                link
+                type="primary"
+                size="small"
+                v-bind="btn.btnProps"
+                @click.stop="tableHandleClick({
+                  scope,
+                  label: btn.label,
+                  key: btn.key,
+                })"
+              >
+                {{ btn.label }}
+              </el-button>
+            </template>
+
+            <el-popover
+              :ref="(el: any) => el && popoverRefs.set(scope.$index, el)"
+              placement="bottom-end"
+              trigger="click"
+              :popper-style="{
+                'width': '100px',
+                'min-width': '100px',
+              }"
+            >
+              <template v-for="(btn, btnIndex) of filterPermissionBtn(scope.row.tableHandleBtnList)">
+                <p
+                  v-if="btnIndex >= maxTableHandleBtnCount"
+                  :key="btn.key"
+                >
+                  <el-button
+                    link
+                    type="primary"
+                    size="small"
+                    v-bind="btn.btnProps"
+                    @click.stop="tableHandleClick({
+                      scope,
+                      label: btn.label,
+                      key: btn.key,
+                    })"
+                  >
+                    {{ btn.label }}
+                  </el-button>
+                </p>
+              </template>
+
+              <template #reference>
+                <el-icon
+                  color="#409eff"
+                  style="
                   vertical-align: middle;
                   display: inline;
                   margin: 0 0 0 8px;
                 "
-              >
-                <CaretBottom />
-              </el-icon>
-            </template>
-          </el-popover>
-        </template>
-      </el-table-column>
-    </template>
-  </el-table>
+                >
+                  <CaretBottom />
+                </el-icon>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
+      </template>
+    </el-table>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.pro-table {
+  height: 100%;
+  // border-top: 10px solid #f1f1f1;
+
+  .table-tool-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 20px 0;
+    box-sizing: border-box;
+  }
+}
+</style>

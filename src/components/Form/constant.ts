@@ -41,4 +41,8 @@ export const defaultComponentProps = new Map([
     action: '#',
     autoUpload: false,
   }],
+  ['DatePicker', {
+    clearable: true,
+    style: 'width: 100%',
+  }],
 ])
