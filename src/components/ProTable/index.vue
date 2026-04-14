@@ -273,7 +273,7 @@ function tableHandleClick({ scope, key, label }: TableHandleBtnClickParams) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0 20px 0;
+    padding: 20px 0;
     box-sizing: border-box;
   }
 }

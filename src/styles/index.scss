@@ -14,7 +14,18 @@
 //   }
 
 //   .common-table-page {
-//     margin: 0 auto 20px;
-//     // text-align: center;
+//     padding-bottom: 20px;
+//     display: flex;
+//     justify-content: center;
 //   }
 // }
+
+// .common-container {
+//   padding: 20px;
+//   box-sizing: border-box;
+// }
+.common-table-page {
+  padding: 20px 0 0 0;
+  display: flex;
+  justify-content: center;
+}

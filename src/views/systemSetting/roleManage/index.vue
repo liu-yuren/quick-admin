@@ -1,10 +1,16 @@
 <script lang="ts" setup>
-import type { FormSchemaProps } from '@/components/common/FormSchema/types'
+import type { FormOptions } from '@/components/Form'
 import type { TableColumnProps } from '@/components/Table/types'
-import { onMounted, reactive, ref } from 'vue'
-// import { SearchForm } from '@/components/Form'
-// import { BasicTable } from '@/components/Table'
-import FormSchema from '@/components/common/FormSchema/index.vue'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import SearchForm from '@/components/Form/SearchForm/index.vue'
+import ProTable from '@/components/ProTable/index.vue'
+import { searchFormSchema } from './index'
+
+const formOptions = reactive<FormOptions>({
+  model: {},
+  gutter: 20,
+  schema: searchFormSchema,
+})
 
 const tableCol: TableColumnProps[] = [
   { type: 'selection', width: 55 },
@@ -13,9 +19,16 @@ const tableCol: TableColumnProps[] = [
   { label: '电话', prop: 'b' },
   { label: '年龄', prop: 'c' },
   { label: '地址', prop: 'd' },
-  { label: '图片', prop: 'imgUrl', isImage: true },
+  { label: '图片', prop: 'imgUrl' },
   { label: '操作', prop: 'handle', fixed: 'right', width: 160 },
 ]
+const pageSizes = [10, 20, 50]
+const page = reactive({
+  pageIndex: 1,
+  pageSize: 10,
+  total: 20,
+})
+const { pageIndex, pageSize, total } = toRefs(page)
 
 const tableHeaderBtns = [
   {
@@ -48,65 +61,6 @@ const tableHeaderBtns = [
 
 const tableData = ref<any[]>([])
 
-const formData = ref({})
-const schema = [
-  {
-    component: 'el-input',
-    componentProps: {
-      placeholder: '请输入用户名',
-    },
-    label: '用户名',
-    name: 'username',
-    rules: [{ required: true }],
-    span: 6,
-  },
-  {
-    component: 'el-input',
-    componentProps: {
-      placeholder: '请输入邮箱',
-    },
-    label: '邮箱',
-    name: 'email',
-    span: 6,
-  },
-  {
-    component: 'el-select',
-    componentProps: {
-      placeholder: '请选择状态',
-      clearable: true,
-    },
-
-    label: '状态',
-    name: 'status',
-    span: 6,
-  },
-  {
-    component: 'el-input',
-    componentProps: {
-      placeholder: '请输入手机号',
-    },
-
-    label: '手机号',
-    name: 'phone',
-
-    span: 6,
-  },
-  {
-    component: 'el-date-picker',
-    componentProps: {
-      'type': 'daterange',
-      'range-separator': '至',
-      'start-placeholder': '开始日期',
-      'end-placeholder': '结束日期',
-      'format': 'YYYY-MM-DD',
-      'value-format': 'YYYY-MM-DD',
-    },
-    label: '创建时间',
-    name: 'createTime',
-    span: 12,
-  },
-]
-
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
     tableData.value.push({
@@ -132,36 +86,45 @@ onMounted(() => {
     return obj
   })
 })
+
+function handleSizeChange(_val: number) {
+
+}
+function handleCurrentChange(_val: number) {
+
+}
 </script>
 
 <template>
-  <div style="height: 100%;">
-    <!-- <SearchForm :class="formOptions" /> -->
-    <FormSchema v-model="formData" :schema="schema" />
+  <div class="common-page-list">
+    <SearchForm
+      :form-options="formOptions"
+    />
 
-    <!-- <BasicTable
+    <ProTable
       :table-col="tableCol"
-      :table-props="{
-        data: tableData,
-      }"
-      :table-header-btns="tableHeaderBtns"
-    /> -->
+      :table-data="tableData"
+      :header-btns="tableHeaderBtns"
+    />
 
-    <div class="common-table-page">
+    <div v-if="total > pageSize" class="common-table-page">
       <el-pagination
-        :page-sizes="[10, 20, 50]"
-        :background="true"
-        layout="total,sizes,prev,pager,next"
-        :total="400"
+        :current-page="pageIndex"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       />
     </div>
+
+    <!-- 子路由渲染区域 -->
+    <router-view />
   </div>
 </template>
 
 <style scoped>
-.common-table-page {
-  display: flex;
-  justify-content: center;
-  padding: 12px 0;
-}
+
 </style>

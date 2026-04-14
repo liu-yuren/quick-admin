@@ -1,7 +1,7 @@
-import type { FormOptions } from '@/components/Form'
+import type { FormOptions, FormSchema } from '@/components/Form'
 import type { TableColumnProps, TableToolBarBtns } from '@/components/Table/types'
 
-export const searchFormSchema = [
+export const searchFormSchema: FormSchema[] = [
   {
     component: 'Input',
     componentProps: {
@@ -17,6 +17,7 @@ export const searchFormSchema = [
       placeholder: '请输入邮箱',
     },
     label: '邮箱',
+    labelWidth: '68px',
     name: 'email',
     span: 8,
   },

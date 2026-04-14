@@ -15,7 +15,7 @@
 <style lang="scss" scoped>
 .main-container {
   // padding: 30px 40px;
-  // padding: 30px 40px;
+  padding: 20px;
   box-sizing: border-box;
   overflow: hidden;
   background: #fff;

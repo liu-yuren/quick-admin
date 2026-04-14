@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
+    "@micro-zoe/micro-app": "1.0.0-rc.29",
     "@vueuse/core": "^13.9.0",
     "axios": "^1.11.0",
     "element-plus": "^2.11.4",

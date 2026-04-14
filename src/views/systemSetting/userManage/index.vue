@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { FormOptions } from '@/components/Form'
 import type { HandleTableActionParams } from '@/components/Table/types'
 import { onMounted, reactive, ref, toRefs } from 'vue'
 import SearchForm from '@/components/Form/SearchForm/index.vue'
@@ -8,7 +9,7 @@ import { searchFormSchema, tableCol, tableHeaderBtns } from './index'
 
 const tableData = ref<any[]>([])
 
-const formOptions = reactive({
+const formOptions = reactive<FormOptions>({
   model: {},
   gutter: 20,
   schema: searchFormSchema,
@@ -86,9 +87,8 @@ function handleCurrentChange(_val: number) {
 </script>
 
 <template>
-  <div class="common-page-list user-manage-container">
+  <div class="common-page-list">
     <SearchForm
-      label-width="80px"
       :form-options="formOptions"
       @search="search"
       @reset="reset"
@@ -122,9 +122,5 @@ function handleCurrentChange(_val: number) {
 </template>
 
 <style scoped>
-.user-manage-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+
 </style>

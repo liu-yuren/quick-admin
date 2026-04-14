@@ -110,6 +110,16 @@ function reset() {
         </el-button>
       </div>
     </div>
+
+    <!-- <el-divider v-if="shouldShowDivider" content-position="right">
+      <el-button
+        type="primary"
+        link
+        @click="isFormCollapsed = !isFormCollapsed"
+      >
+        {{ isFormCollapsed ? '展开' : '收起' }}
+      </el-button>
+    </el-divider> -->
   </div>
 </template>
 
