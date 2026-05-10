@@ -1,11 +1,31 @@
 <script lang="ts" setup>
+import type { FormOptions } from '@/components/Form'
+import type { TableHandleBtnClickParams } from '@/components/ProTable/types'
 import type { HandleTableActionParams } from '@/components/Table/types'
-import { onMounted, ref } from 'vue'
-import { ProTable } from '@/components/Table'
+import { onMounted, reactive, ref, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
+import SearchForm from '@/components/Form/SearchForm/index.vue'
+import ProTable from '@/components/ProTable/index.vue'
 import router from '@/router'
-import { formOptions, tableCol, tableHeaderBtns } from './index'
+import { searchFormSchema, tableCol, tableHeaderBtns } from './index'
+
+const route = useRoute()
 
 const tableData = ref<any[]>([])
+
+const formOptions = reactive<FormOptions>({
+  model: {},
+  gutter: 20,
+  schema: searchFormSchema,
+})
+
+const pageSizes = [10, 20, 50]
+const page = reactive({
+  pageIndex: 1,
+  pageSize: 10,
+  total: 20,
+})
+const { pageIndex, pageSize, total } = toRefs(page)
 
 onMounted(() => {
   for (let i = 0; i < 10; i++) {
@@ -34,10 +54,10 @@ onMounted(() => {
   })
 })
 
-function handleTableAction(scope: HandleTableActionParams) {
+function tableHandleClick({ scope, key }: TableHandleBtnClickParams) {
   console.log(scope, 'handleTableAction')
+  console.log(route)
 
-  const { key } = scope
   switch (key) {
     case 'add':
       router.push({ name: 'UserManageAdd' })
@@ -53,44 +73,58 @@ function reset() {
   // 重置逻辑
 }
 
-function handleSelectionChange(val) {
+function handleSelectionChange(_val: any) {
   // 选中逻辑
-  console.log(val, 'val==')
+  // console.log(val, 'val==')
 }
 
-function dragSort(params) {
-  console.log(params, 'params');
+function dragSort(_params: any) {
+  // console.log(params, 'params')
+}
+
+function handleSizeChange(_val: number) {
+
+}
+function handleCurrentChange(_val: number) {
   
 }
 </script>
 
 <template>
-  <div class="user-manage-container">
-    <ProTable
-      v-if="$route.name === 'UserManage'"
+  <div v-if="['/system-setting/base-setting/user-manage'].includes($route.path)" class="common-page-list">
+    <SearchForm
       :form-options="formOptions"
-      :table-props="{
-        data: tableData,
-        rowKey: 'id',
-        onSelectionChange: handleSelectionChange,
-      }"
-      :table-col="tableCol"
-      :table-header-btns="tableHeaderBtns"
       @search="search"
       @reset="reset"
-      @handle-table-action="handleTableAction"
+    />
+
+    <ProTable
+      :table-col="tableCol"
+      :table-data="tableData"
+      :header-btns="tableHeaderBtns"
+      @table-handle-click="tableHandleClick"
+      @selection-change="handleSelectionChange"
       @drag-sort="dragSort"
     />
 
-    <!-- 子路由渲染区域 -->
-    <router-view />
+    <div v-if="total > pageSize" class="common-table-page">
+      <el-pagination
+        :current-page="pageIndex"
+        :page-sizes="pageSizes"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next"
+        :total="total"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
+
+  <!-- 子路由渲染区域 -->
+  <router-view />
 </template>
 
 <style scoped>
-.user-manage-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+
 </style>

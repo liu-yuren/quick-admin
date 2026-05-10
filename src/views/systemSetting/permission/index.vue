@@ -28,7 +28,7 @@ async function getListFn() {
 </script>
 
 <template>
-  <div>
+  <div class="common-container">
     <el-tree
       :data="treeList"
       node-key="id"

@@ -1,1 +1,31 @@
 @import url('./reset.scss');
+
+// .common-page-list {
+//   .search-form-container {
+//     padding: 20px;
+//     box-sizing: border-box;
+//   }
+
+//   .pro-table {
+//     padding: 20px;
+//     box-sizing: border-box;
+//     border-top: 10px solid #f1f1f1;
+//     box-sizing: border-box;
+//   }
+
+//   .common-table-page {
+//     padding-bottom: 20px;
+//     display: flex;
+//     justify-content: center;
+//   }
+// }
+
+// .common-container {
+//   padding: 20px;
+//   box-sizing: border-box;
+// }
+.common-table-page {
+  padding: 20px 0 0 0;
+  display: flex;
+  justify-content: center;
+}

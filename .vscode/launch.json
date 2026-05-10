@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  // 调试配置列表，可以配置多个调试规则
+  "configurations": [
+    {
+      // 调试类型：使用 Chrome 浏览器调试
+      "type": "chrome",
+      // 调试方式：启动一个新的 Chrome 窗口（另一个值是attach，附加到已打开的Chrome）
+      "request": "launch",
+      // 调试任务的名称，VS Code 调试面板里会显示这个名字
+      "name": "Launch Chrome against localhost",
+      // 调试时要打开的项目地址（Vite 默认启动端口是5173）
+      "url": "http://localhost:5173",
+      // 项目源码的根目录：${workspaceFolder}是你的项目根路径，这里指定调试的代码只在src目录下
+      "webRoot": "${workspaceFolder}/src",
+      // 开启源码映射：让调试器能关联压缩/编译后的代码和你的原始源码（比如.vue文件）
+      "sourceMaps": true,
+      // 调试时跳过这些文件，不会进入这些文件的断点
+      "skipFiles": [
+        // 跳过 node_modules 中的所有文件调试 （第三方依赖，比如element-plus）
+        "${workspaceFolder}/node_modules/**/*",
+        // 跳过Node内置模块，减少干扰
+        "<node_internals>/**"
+      ],
+      // 修正 source map 的路径映射（解决源码位置找不到的问题）
+      "sourceMapPathOverrides": {
+        // 把webpack格式的路径（兼容旧配置）映射到你项目的src目录
+        "webpack:///*": "${webRoot}/*"
+      },
+      // 指定调试器只解析这些目录的 source map 文件
+      "resolveSourceMapLocations": [
+        // 只解析src目录下的source map，忽略其他目录
+        "${workspaceFolder}/src/**",
+        // 明确忽略node_modules的source map
+        "!**/node_modules/**"
+      ]
+    }
+  ]
+}

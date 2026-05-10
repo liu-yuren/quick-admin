@@ -1,6 +1,7 @@
+import type { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layouts/index.vue'
 
-export const systemSettingRoutes = [
+export const systemSettingRoutes: RouteRecordRaw[] = [
   {
     path: '/system-setting',
     name: 'SystemSetting',
@@ -13,6 +14,7 @@ export const systemSettingRoutes = [
       {
         path: 'base-setting',
         name: 'BaseSetting',
+        redirect: '/system-setting/base-setting/user-manage',
         meta: {
           title: '基本设置',
           permissionCode: 'base-setting',
@@ -52,16 +54,6 @@ export const systemSettingRoutes = [
             },
           },
           {
-            path: 'demo',
-            name: 'demo',
-            component: () => import('@/views/systemSetting/demo.vue'),
-            meta: {
-              title: 'demo',
-              permissionCode: 'role-manage',
-              icon: 'menu',
-            },
-          },
-          {
             path: 'permissionCode-setting',
             name: 'permissionCodeSetting',
             component: () => import('@/views/systemSetting/permission/index.vue'),
@@ -81,6 +73,7 @@ export const systemSettingRoutes = [
           permissionCode: 'log-manage',
           icon: 'menu',
         },
+        children: [],
       },
     ],
   },

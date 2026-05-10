@@ -12,7 +12,9 @@ function goBack() {
 
 <template>
   <div class="user-handle-page">
-    <SchemaForm :form-options="formOptions" />
+    <!-- <SchemaForm :form-options="formOptions" /> -->
+
+    操作页面
   </div>
 </template>
 

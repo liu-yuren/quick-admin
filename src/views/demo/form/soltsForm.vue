@@ -1,34 +1,21 @@
-<script setup lang="tsx">
-import type { FormSchemaItems } from '@/components/common/FormSchema/types'
+<script setup lang="ts">
 import { Plus, Search } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
 import { h, ref } from 'vue'
-import FormSchema from '@/components/common/FormSchema/index.vue'
+import SchemaForm from '@/components/SchemaForm/index.vue'
 
 const formData = ref({})
 
-const schema = ref<FormSchemaItems[]>([
+const schema = ref([
   {
     component: 'el-input',
-    componentEvents: {
-      input: (val) => {
-        console.log(val, 'input')
-      },
-      change: (val) => {
-        console.log(val, 'change')
-      },
-      focus() {
-        console.log('focus')
-      },
-    },
     componentSlots: () => ({
       prefix: 'prefix1',
       suffix: h(ElIcon, { class: 'el-icon' }, { default: () => h(Search) }),
     }),
-    name: 'username',
-    label: '姓名',
+    name: 'name',
+    label: '活动名称',
     span: 24,
-    tips: 'vin逗号分隔',
   },
   {
     component: 'el-input',
@@ -62,17 +49,25 @@ const schema = ref<FormSchemaItems[]>([
 </script>
 
 <template>
-  <div class="demo" style="height: 100%;">
-    {{ formData }}
+  <div class="basic-form-container">
+    <div style="font-size: 18px;font-weight: bold;">
+      插槽使用
+    </div>
+
+    formData: {{ formData }}
+
     <hr>
-    <FormSchema
+
+    <SchemaForm
       v-model="formData"
-      :schema="schema"
       label-width="auto"
-    >
-      <!-- <template #username>
-        <el-input />
-      </template> -->
-    </FormSchema>
+      :schema="schema"
+    />
   </div>
 </template>
+
+<style scoped>
+.basic-form-container {
+  height: 100%;
+}
+</style>

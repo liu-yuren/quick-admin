@@ -1,4 +1,3 @@
-import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 import Layout from '@/layouts/index.vue'
 
 export const echartsRoutes = [

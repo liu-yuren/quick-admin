@@ -120,7 +120,5 @@ defineExpose({
       <!-- 操作列 -->
       <ActionColumn v-if="columnHandleTypes.includes(item.type)" v-bind="item" />
     </template>
-
-    
   </el-table>
 </template>
