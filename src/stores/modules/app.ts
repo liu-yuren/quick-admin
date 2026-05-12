@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
-import { reactive, ref, toRefs } from 'vue'
+import { ref } from 'vue'
 
 interface AppStoreState {
   isCollapse: boolean

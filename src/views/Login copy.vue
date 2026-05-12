@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Loading } from '@element-plus/icons-vue'
-import { onMounted, reactive, toRefs } from 'vue'
+import { reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 // import { useUserStore } from '@/stores/modules/user'

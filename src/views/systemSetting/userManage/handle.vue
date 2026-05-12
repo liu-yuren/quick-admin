@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { SchemaForm } from '@/components/Form'
-import { formOptions } from './handle'
 
 const router = useRouter()
 

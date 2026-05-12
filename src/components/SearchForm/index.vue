@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowDown, RefreshRight, Search } from '@element-plus/icons-vue'
+import { ArrowDown } from '@element-plus/icons-vue'
 import { computed, ref } from 'vue'
 import Form from '../SchemaForm/index.vue'
 
