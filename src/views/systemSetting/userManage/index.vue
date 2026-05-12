@@ -83,7 +83,7 @@ function dragSort(_params: any) {
 }
 
 function handleSizeChange(_val: number) {
-
+  console.log(_val, 'handleSizeChange')
 }
 function handleCurrentChange(_val: number) {
   
