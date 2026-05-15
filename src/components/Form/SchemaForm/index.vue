@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { UploadFile } from 'element-plus'
 import type { FormOptions, FormSchema } from '../types'
 import { computed, reactive, toRefs, useTemplateRef } from 'vue'
 import { componentMap, defaultComponentProps } from '../constant'

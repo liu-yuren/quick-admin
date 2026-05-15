@@ -1,5 +1,5 @@
 import type { Arrayable } from '@vueuse/core'
-import type { ColProps, ElTooltipProps, FormItemRule, FormProps } from 'element-plus'
+import type { ColProps, ElTooltipProps, FormItemRule } from 'element-plus'
 import type { Component, MaybeRef, VNode } from 'vue'
 
 export type Recordable = Record<string, any>

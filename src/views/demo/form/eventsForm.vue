@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { Plus, Search } from '@element-plus/icons-vue'
-import { ElIcon, ElMessage } from 'element-plus'
-import { h, ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { ref } from 'vue'
 import SchemaForm from '@/components/SchemaForm/index.vue'
 
 const formData = ref({})
